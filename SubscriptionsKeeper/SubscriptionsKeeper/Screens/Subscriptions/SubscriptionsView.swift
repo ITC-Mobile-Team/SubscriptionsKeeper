@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  SubscriptionsView.swift
 //  SubscriptionsKeeper
 //
 //  Created by Bohdan Pokhidnia on 17.04.2026.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct SubscriptionsView: View {
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -20,5 +20,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    SubscriptionsView()
 }
