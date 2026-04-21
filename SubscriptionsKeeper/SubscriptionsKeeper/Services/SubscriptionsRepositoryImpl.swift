@@ -7,181 +7,163 @@
 
 protocol SubscriptionsRepository {
     func fetchAvailableSubscriptions() -> [Subscription]
+    func fetchGroupedSubscriptions() -> [SubscriptionSection]
 }
 
 final class SubscriptionsRepositoryImpl: SubscriptionsRepository {
     func fetchAvailableSubscriptions() -> [Subscription] {
         [
-            // AI
-            Subscription(identifier: .chatGPTPlus, name: "ChatGPT Plus"),
-            Subscription(identifier: .claudePro, name: "Claude Pro"),
-            Subscription(identifier: .cursorPro, name: "Cursor Pro"),
-            Subscription(identifier: .elevenLabs, name: "ElevenLabs"),
-            Subscription(identifier: .geminiAdvanced, name: "Gemini Advanced"),
-            Subscription(identifier: .ideogram, name: "Ideogram"),
-            Subscription(identifier: .jasper, name: "Jasper"),
-            Subscription(identifier: .leonardoAI, name: "Leonardo AI"),
-            Subscription(identifier: .microsoftCopilotPro, name: "Microsoft Copilot Pro"),
-            Subscription(identifier: .midjourney, name: "Midjourney"),
-            Subscription(identifier: .perplexityPro, name: "Perplexity Pro"),
-            Subscription(identifier: .poe, name: "Poe"),
-            Subscription(identifier: .runway, name: "Runway"),
-            Subscription(identifier: .sunoPro, name: "Suno Pro"),
-            Subscription(identifier: .superhuman, name: "Superhuman"),
-            Subscription(identifier: .synthesia, name: "Synthesia"),
+            Subscription(identifier: .chatGPTPlus, name: "ChatGPT Plus", group: .ai),
+            Subscription(identifier: .claudePro, name: "Claude Pro", group: .ai),
+            Subscription(identifier: .cursorPro, name: "Cursor Pro", group: .ai),
+            Subscription(identifier: .elevenLabs, name: "ElevenLabs", group: .ai),
+            Subscription(identifier: .geminiAdvanced, name: "Gemini Advanced", group: .ai),
+            Subscription(identifier: .ideogram, name: "Ideogram", group: .ai),
+            Subscription(identifier: .jasper, name: "Jasper", group: .ai),
+            Subscription(identifier: .leonardoAI, name: "Leonardo AI", group: .ai),
+            Subscription(identifier: .microsoftCopilotPro, name: "Microsoft Copilot Pro", group: .ai),
+            Subscription(identifier: .midjourney, name: "Midjourney", group: .ai),
+            Subscription(identifier: .perplexityPro, name: "Perplexity Pro", group: .ai),
+            Subscription(identifier: .poe, name: "Poe", group: .ai),
+            Subscription(identifier: .runway, name: "Runway", group: .ai),
+            Subscription(identifier: .sunoPro, name: "Suno Pro", group: .ai),
+            Subscription(identifier: .superhuman, name: "Superhuman", group: .ai),
+            Subscription(identifier: .synthesia, name: "Synthesia", group: .ai),
 
-            // Apple Services
-            Subscription(identifier: .appleArcade, name: "Apple Arcade"),
-            Subscription(identifier: .appleDeveloperProgram, name: "Apple Developer Program"),
-            Subscription(identifier: .appleFitnessPlus, name: "Apple Fitness+"),
-            Subscription(identifier: .appleMusic, name: "Apple Music"),
-            Subscription(identifier: .appleNewsPlus, name: "Apple News+"),
-            Subscription(identifier: .appleOne, name: "Apple One"),
-            Subscription(identifier: .appleTVPlus, name: "Apple TV+"),
-            Subscription(identifier: .appleCare, name: "AppleCare+"),
-            Subscription(identifier: .iCloudPlus, name: "iCloud+"),
-            Subscription(identifier: .iTunesMatch, name: "iTunes Match"),
+            Subscription(identifier: .appleArcade, name: "Apple Arcade", group: .appleServices),
+            Subscription(identifier: .appleDeveloperProgram, name: "Apple Developer Program", group: .appleServices),
+            Subscription(identifier: .appleFitnessPlus, name: "Apple Fitness+", group: .appleServices),
+            Subscription(identifier: .appleMusic, name: "Apple Music", group: .appleServices),
+            Subscription(identifier: .appleNewsPlus, name: "Apple News+", group: .appleServices),
+            Subscription(identifier: .appleOne, name: "Apple One", group: .appleServices),
+            Subscription(identifier: .appleTVPlus, name: "Apple TV+", group: .appleServices),
+            Subscription(identifier: .appleCare, name: "AppleCare+", group: .appleServices),
+            Subscription(identifier: .iCloudPlus, name: "iCloud+", group: .appleServices),
+            Subscription(identifier: .iTunesMatch, name: "iTunes Match", group: .appleServices),
 
-            // Audio
-            Subscription(identifier: .audible, name: "Audible"),
+            Subscription(identifier: .audible, name: "Audible", group: .audio),
 
-            // Career
-            Subscription(identifier: .linkedInPremium, name: "LinkedIn Premium"),
+            Subscription(identifier: .linkedInPremium, name: "LinkedIn Premium", group: .career),
 
-            // Cloud
-            Subscription(identifier: .box, name: "Box"),
-            Subscription(identifier: .dropbox, name: "Dropbox"),
-            Subscription(identifier: .googleOne, name: "Google One"),
-            Subscription(identifier: .mega, name: "MEGA"),
-            Subscription(identifier: .oneDrive, name: "OneDrive"),
-            Subscription(identifier: .pCloud, name: "pCloud"),
-            Subscription(identifier: .protonDrive, name: "Proton Drive"),
+            Subscription(identifier: .box, name: "Box", group: .cloud),
+            Subscription(identifier: .dropbox, name: "Dropbox", group: .cloud),
+            Subscription(identifier: .googleOne, name: "Google One", group: .cloud),
+            Subscription(identifier: .mega, name: "MEGA", group: .cloud),
+            Subscription(identifier: .oneDrive, name: "OneDrive", group: .cloud),
+            Subscription(identifier: .pCloud, name: "pCloud", group: .cloud),
+            Subscription(identifier: .protonDrive, name: "Proton Drive", group: .cloud),
 
-            // Communication
-            Subscription(identifier: .discordNitro, name: "Discord Nitro"),
-            Subscription(identifier: .slackPro, name: "Slack Pro"),
-            Subscription(identifier: .telegramPremium, name: "Telegram Premium"),
-            Subscription(identifier: .zoomPro, name: "Zoom Pro"),
+            Subscription(identifier: .discordNitro, name: "Discord Nitro", group: .communication),
+            Subscription(identifier: .slackPro, name: "Slack Pro", group: .communication),
+            Subscription(identifier: .telegramPremium, name: "Telegram Premium", group: .communication),
+            Subscription(identifier: .zoomPro, name: "Zoom Pro", group: .communication),
 
-            // Creator
-            Subscription(identifier: .patreon, name: "Patreon"),
+            Subscription(identifier: .patreon, name: "Patreon", group: .creator),
 
-            // Delivery
-            Subscription(identifier: .woltPlus, name: "Wolt+"),
+            Subscription(identifier: .woltPlus, name: "Wolt+", group: .delivery),
 
-            // Design
-            Subscription(identifier: .adobeCreativeCloud, name: "Adobe Creative Cloud"),
-            Subscription(identifier: .canvaPro, name: "Canva Pro"),
-            Subscription(identifier: .figma, name: "Figma"),
+            Subscription(identifier: .adobeCreativeCloud, name: "Adobe Creative Cloud", group: .design),
+            Subscription(identifier: .canvaPro, name: "Canva Pro", group: .design),
+            Subscription(identifier: .figma, name: "Figma", group: .design),
 
-            // Developer Tools
-            Subscription(identifier: .digitalOcean, name: "DigitalOcean"),
-            Subscription(identifier: .gitHubCopilot, name: "GitHub Copilot"),
-            Subscription(identifier: .gitLabPremium, name: "GitLab Premium"),
-            Subscription(identifier: .heroku, name: "Heroku"),
-            Subscription(identifier: .jetBrainsAllProducts, name: "JetBrains All Products"),
-            Subscription(identifier: .linear, name: "Linear"),
-            Subscription(identifier: .mongoDBAtlas, name: "MongoDB Atlas"),
-            Subscription(identifier: .replitCore, name: "Replit Core"),
-            Subscription(identifier: .vercelPro, name: "Vercel Pro"),
+            Subscription(identifier: .digitalOcean, name: "DigitalOcean", group: .developerTools),
+            Subscription(identifier: .gitHubCopilot, name: "GitHub Copilot", group: .developerTools),
+            Subscription(identifier: .gitLabPremium, name: "GitLab Premium", group: .developerTools),
+            Subscription(identifier: .heroku, name: "Heroku", group: .developerTools),
+            Subscription(identifier: .jetBrainsAllProducts, name: "JetBrains All Products", group: .developerTools),
+            Subscription(identifier: .linear, name: "Linear", group: .developerTools),
+            Subscription(identifier: .mongoDBAtlas, name: "MongoDB Atlas", group: .developerTools),
+            Subscription(identifier: .replitCore, name: "Replit Core", group: .developerTools),
+            Subscription(identifier: .vercelPro, name: "Vercel Pro", group: .developerTools),
 
-            // Education
-            Subscription(identifier: .babbel, name: "Babbel"),
-            Subscription(identifier: .brilliant, name: "Brilliant"),
-            Subscription(identifier: .codecademyPro, name: "Codecademy Pro"),
-            Subscription(identifier: .courseraPlus, name: "Coursera Plus"),
-            Subscription(identifier: .duolingoSuper, name: "Duolingo Super"),
-            Subscription(identifier: .masterClass, name: "MasterClass"),
-            Subscription(identifier: .skillshare, name: "Skillshare"),
+            Subscription(identifier: .babbel, name: "Babbel", group: .education),
+            Subscription(identifier: .brilliant, name: "Brilliant", group: .education),
+            Subscription(identifier: .codecademyPro, name: "Codecademy Pro", group: .education),
+            Subscription(identifier: .courseraPlus, name: "Coursera Plus", group: .education),
+            Subscription(identifier: .duolingoSuper, name: "Duolingo Super", group: .education),
+            Subscription(identifier: .masterClass, name: "MasterClass", group: .education),
+            Subscription(identifier: .skillshare, name: "Skillshare", group: .education),
 
-            // Finance
-            Subscription(identifier: .revolutPremium, name: "Revolut Premium"),
-            Subscription(identifier: .tradingViewEssential, name: "TradingView Essential"),
-            Subscription(identifier: .ynab, name: "YNAB"),
+            Subscription(identifier: .revolutPremium, name: "Revolut Premium", group: .finance),
+            Subscription(identifier: .tradingViewEssential, name: "TradingView Essential", group: .finance),
+            Subscription(identifier: .ynab, name: "YNAB", group: .finance),
 
-            // Fitness
-            Subscription(identifier: .fitbod, name: "Fitbod"),
-            Subscription(identifier: .myFitnessPalPremium, name: "MyFitnessPal Premium"),
-            Subscription(identifier: .peloton, name: "Peloton"),
-            Subscription(identifier: .strava, name: "Strava"),
+            Subscription(identifier: .fitbod, name: "Fitbod", group: .fitness),
+            Subscription(identifier: .myFitnessPalPremium, name: "MyFitnessPal Premium", group: .fitness),
+            Subscription(identifier: .peloton, name: "Peloton", group: .fitness),
+            Subscription(identifier: .strava, name: "Strava", group: .fitness),
 
-            // Gaming
-            Subscription(identifier: .eaPlay, name: "EA Play"),
-            Subscription(identifier: .nintendoSwitchOnline, name: "Nintendo Switch Online"),
-            Subscription(identifier: .playStationPlus, name: "PlayStation Plus"),
-            Subscription(identifier: .ubisoftPlus, name: "Ubisoft+"),
-            Subscription(identifier: .xboxGamePass, name: "Xbox Game Pass"),
+            Subscription(identifier: .eaPlay, name: "EA Play", group: .gaming),
+            Subscription(identifier: .nintendoSwitchOnline, name: "Nintendo Switch Online", group: .gaming),
+            Subscription(identifier: .playStationPlus, name: "PlayStation Plus", group: .gaming),
+            Subscription(identifier: .ubisoftPlus, name: "Ubisoft+", group: .gaming),
+            Subscription(identifier: .xboxGamePass, name: "Xbox Game Pass", group: .gaming),
 
-            // Mobility
-            Subscription(identifier: .boltPlus, name: "Bolt Plus"),
-            Subscription(identifier: .uberOne, name: "Uber One"),
+            Subscription(identifier: .boltPlus, name: "Bolt Plus", group: .mobility),
+            Subscription(identifier: .uberOne, name: "Uber One", group: .mobility),
 
-            // Music
-            Subscription(identifier: .deezer, name: "Deezer"),
-            Subscription(identifier: .soundCloudGoPlus, name: "SoundCloud Go+"),
-            Subscription(identifier: .spotify, name: "Spotify"),
-            Subscription(identifier: .tidal, name: "TIDAL"),
-            Subscription(identifier: .youTubeMusic, name: "YouTube Music"),
+            Subscription(identifier: .deezer, name: "Deezer", group: .music),
+            Subscription(identifier: .soundCloudGoPlus, name: "SoundCloud Go+", group: .music),
+            Subscription(identifier: .spotify, name: "Spotify", group: .music),
+            Subscription(identifier: .tidal, name: "TIDAL", group: .music),
+            Subscription(identifier: .youTubeMusic, name: "YouTube Music", group: .music),
 
-            // News
-            Subscription(identifier: .substack, name: "Substack"),
-            Subscription(identifier: .theAthletic, name: "The Athletic"),
-            Subscription(identifier: .theNewYorkTimes, name: "The New York Times"),
-            Subscription(identifier: .theWallStreetJournal, name: "The Wall Street Journal"),
+            Subscription(identifier: .substack, name: "Substack", group: .news),
+            Subscription(identifier: .theAthletic, name: "The Athletic", group: .news),
+            Subscription(identifier: .theNewYorkTimes, name: "The New York Times", group: .news),
+            Subscription(identifier: .theWallStreetJournal, name: "The Wall Street Journal", group: .news),
 
-            // Productivity
-            Subscription(identifier: .evernote, name: "Evernote"),
-            Subscription(identifier: .microsoft365, name: "Microsoft 365"),
-            Subscription(identifier: .notion, name: "Notion"),
-            Subscription(identifier: .obsidianSync, name: "Obsidian Sync"),
-            Subscription(identifier: .raycastPro, name: "Raycast Pro"),
-            Subscription(identifier: .readwise, name: "Readwise"),
-            Subscription(identifier: .todoist, name: "Todoist"),
+            Subscription(identifier: .evernote, name: "Evernote", group: .productivity),
+            Subscription(identifier: .microsoft365, name: "Microsoft 365", group: .productivity),
+            Subscription(identifier: .notion, name: "Notion", group: .productivity),
+            Subscription(identifier: .obsidianSync, name: "Obsidian Sync", group: .productivity),
+            Subscription(identifier: .raycastPro, name: "Raycast Pro", group: .productivity),
+            Subscription(identifier: .readwise, name: "Readwise", group: .productivity),
+            Subscription(identifier: .todoist, name: "Todoist", group: .productivity),
 
-            // Reading
-            Subscription(identifier: .kindleUnlimited, name: "Kindle Unlimited"),
+            Subscription(identifier: .kindleUnlimited, name: "Kindle Unlimited", group: .reading),
 
-            // Security
-            Subscription(identifier: .onePassword, name: "1Password"),
-            Subscription(identifier: .bitwardenPremium, name: "Bitwarden Premium"),
-            Subscription(identifier: .dashlane, name: "Dashlane"),
-            Subscription(identifier: .expressVPN, name: "ExpressVPN"),
-            Subscription(identifier: .nordVPN, name: "NordVPN"),
-            Subscription(identifier: .protonMailPlus, name: "Proton Mail Plus"),
-            Subscription(identifier: .protonPass, name: "Proton Pass"),
-            Subscription(identifier: .surfshark, name: "Surfshark"),
+            Subscription(identifier: .onePassword, name: "1Password", group: .security),
+            Subscription(identifier: .bitwardenPremium, name: "Bitwarden Premium", group: .security),
+            Subscription(identifier: .dashlane, name: "Dashlane", group: .security),
+            Subscription(identifier: .expressVPN, name: "ExpressVPN", group: .security),
+            Subscription(identifier: .nordVPN, name: "NordVPN", group: .security),
+            Subscription(identifier: .protonMailPlus, name: "Proton Mail Plus", group: .security),
+            Subscription(identifier: .protonPass, name: "Proton Pass", group: .security),
+            Subscription(identifier: .surfshark, name: "Surfshark", group: .security),
 
-            // Shopping
-            Subscription(identifier: .amazonPrime, name: "Amazon Prime"),
+            Subscription(identifier: .amazonPrime, name: "Amazon Prime", group: .shopping),
 
-            // Social
-            Subscription(identifier: .xPremium, name: "X Premium"),
+            Subscription(identifier: .xPremium, name: "X Premium", group: .social),
 
-            // Streaming
-            Subscription(identifier: .crunchyroll, name: "Crunchyroll"),
-            Subscription(identifier: .disneyPlus, name: "Disney+"),
-            Subscription(identifier: .hboMax, name: "HBO Max"),
-            Subscription(identifier: .hulu, name: "Hulu"),
-            Subscription(identifier: .mubi, name: "MUBI"),
-            Subscription(identifier: .netflix, name: "Netflix"),
-            Subscription(identifier: .paramountPlus, name: "Paramount+"),
-            Subscription(identifier: .primeVideo, name: "Prime Video"),
-            Subscription(identifier: .twitchTurbo, name: "Twitch Turbo"),
+            Subscription(identifier: .crunchyroll, name: "Crunchyroll", group: .streaming),
+            Subscription(identifier: .disneyPlus, name: "Disney+", group: .streaming),
+            Subscription(identifier: .hboMax, name: "HBO Max", group: .streaming),
+            Subscription(identifier: .hulu, name: "Hulu", group: .streaming),
+            Subscription(identifier: .mubi, name: "MUBI", group: .streaming),
+            Subscription(identifier: .netflix, name: "Netflix", group: .streaming),
+            Subscription(identifier: .paramountPlus, name: "Paramount+", group: .streaming),
+            Subscription(identifier: .primeVideo, name: "Prime Video", group: .streaming),
+            Subscription(identifier: .twitchTurbo, name: "Twitch Turbo", group: .streaming),
 
-            // Utilities
-            Subscription(identifier: .setapp, name: "Setapp"),
+            Subscription(identifier: .setapp, name: "Setapp", group: .utilities),
 
-            // Video
-            Subscription(identifier: .youTubePremium, name: "YouTube Premium"),
+            Subscription(identifier: .youTubePremium, name: "YouTube Premium", group: .video),
 
-            // Wellness
-            Subscription(identifier: .calm, name: "Calm"),
-            Subscription(identifier: .headspace, name: "Headspace"),
-            Subscription(identifier: .noom, name: "Noom"),
+            Subscription(identifier: .calm, name: "Calm", group: .wellness),
+            Subscription(identifier: .headspace, name: "Headspace", group: .wellness),
+            Subscription(identifier: .noom, name: "Noom", group: .wellness),
 
-            // Writing
-            Subscription(identifier: .grammarly, name: "Grammarly"),
-            Subscription(identifier: .mediumMember, name: "Medium Member"),
+            Subscription(identifier: .grammarly, name: "Grammarly", group: .writing),
+            Subscription(identifier: .mediumMember, name: "Medium Member", group: .writing),
         ]
+    }
+
+    func fetchGroupedSubscriptions() -> [SubscriptionSection] {
+        let grouped = Dictionary(grouping: fetchAvailableSubscriptions(), by: \.group)
+        return SubscriptionGroup.allCases.compactMap { group in
+            guard let subscriptions = grouped[group] else { return nil }
+            return SubscriptionSection(group: group, subscriptions: subscriptions)
+        }
     }
 }

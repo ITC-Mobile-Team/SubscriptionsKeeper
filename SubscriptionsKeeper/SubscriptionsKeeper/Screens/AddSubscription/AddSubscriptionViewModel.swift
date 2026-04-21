@@ -9,7 +9,7 @@ import SwiftUI
 
 @Observable
 final class AddSubscriptionViewModel {
-    private(set) var subscriptions: [Subscription] = []
+    private(set) var subscriptionSections: [SubscriptionSection] = []
     
     private let repository: SubscriptionsRepository
     
@@ -18,6 +18,6 @@ final class AddSubscriptionViewModel {
     }
     
     func onAppear() {
-        subscriptions = repository.fetchAvailableSubscriptions()
+        subscriptionSections = repository.fetchGroupedSubscriptions()
     }
 }
