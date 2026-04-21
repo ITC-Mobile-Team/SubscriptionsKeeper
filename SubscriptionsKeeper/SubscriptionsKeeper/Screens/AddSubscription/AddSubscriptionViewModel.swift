@@ -9,5 +9,15 @@ import SwiftUI
 
 @Observable
 final class AddSubscriptionViewModel {
+    private(set) var subscriptions: [Subscription] = []
     
+    private let repository: SubscriptionsRepository
+    
+    init(repository: SubscriptionsRepository) {
+        self.repository = repository
+    }
+    
+    func onAppear() {
+        subscriptions = repository.fetchAvailableSubscriptions()
+    }
 }

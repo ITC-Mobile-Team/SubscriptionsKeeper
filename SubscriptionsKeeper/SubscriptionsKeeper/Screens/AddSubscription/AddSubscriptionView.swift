@@ -14,26 +14,22 @@ struct AddSubscriptionView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 12) {
-                    subscriptionView(
-                        iconName: "sparkles",
-                        iconColor: Color(red: 0.85, green: 0.55, blue: 0.45),
-                        title: "Claude Pro"
-                    ) {
-                        
-                    }
-                    
-                    subscriptionView(
-                        iconName: "sparkles",
-                        iconColor: Color.black,
-                        title: "ChatGPT"
-                    ) {
-                        
+                    ForEach(viewModel.subscriptions, id: \.identifier) { subscription in
+                        subscriptionView(
+                            iconName: "",
+                            iconColor: .black,
+                            title: subscription.name,
+                            action: {}
+                        )
                     }
                 }
                 .padding(.horizontal, 16)
                 .padding(.top, 16)
             }
             .navigationTitle("Subscriptions")
+            .onAppear {
+                viewModel.onAppear()
+            }
         }
     }
 }
@@ -78,5 +74,7 @@ private extension AddSubscriptionView {
 }
 
 #Preview {
-    AddSubscriptionView(viewModel: AddSubscriptionViewModel())
+    AddSubscriptionView(
+        viewModel: AddSubscriptionViewModel(repository: SubscriptionsRepositoryImpl())
+    )
 }

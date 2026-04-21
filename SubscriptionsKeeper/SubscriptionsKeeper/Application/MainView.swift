@@ -34,7 +34,9 @@ struct MainView: View {
         .sheet(item: $router.presentedRoute) { route in
             switch route {
             case .addSubscription:
-                AddSubscriptionView(viewModel: AddSubscriptionViewModel())
+                AddSubscriptionView(viewModel: AddSubscriptionViewModel(repository: SubscriptionsRepositoryImpl()))
+                    .presentationDragIndicator(.visible)
+                    .presentationDetents([.large, .medium])
             }
         }
     }
