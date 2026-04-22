@@ -13,7 +13,7 @@ struct SubscriptionsView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                monthlyAverageCard
+                monthlyAverageView
                 
                 emptyView
             }
@@ -42,7 +42,7 @@ struct SubscriptionsView: View {
 }
 
 private extension SubscriptionsView {
-    var monthlyAverageCard: some View {
+    var monthlyAverageView: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 24)
                 .fill(
@@ -56,14 +56,13 @@ private extension SubscriptionsView {
                     )
                 )
 
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 16) {
                 Text("MONTHLY AVERAGE")
-                    .font(.caption)
-                    .fontWeight(.semibold)
+                    .font(.system(size: 16, weight: .bold))
                     .foregroundStyle(.white.opacity(0.9))
 
                 Text("€0,00")
-                    .font(.system(size: 40, weight: .bold))
+                    .font(.system(size: 58, weight: .bold))
                     .foregroundStyle(.white)
 
                 HStack(spacing: 12) {

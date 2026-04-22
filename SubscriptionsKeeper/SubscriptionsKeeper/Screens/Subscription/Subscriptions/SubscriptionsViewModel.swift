@@ -16,6 +16,6 @@ final class SubscriptionsViewModel {
     }
 
     func addSubscriptionButtonTapped() {
-        router.present(AppRoute.addSubscription)
+        router.present(SubscriptionRoute.addSubscription)
     }
 }

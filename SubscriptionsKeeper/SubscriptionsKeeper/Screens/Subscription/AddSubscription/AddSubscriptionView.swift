@@ -11,31 +11,30 @@ struct AddSubscriptionView: View {
     @Bindable var viewModel: AddSubscriptionViewModel
     
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 16) {
-                    ForEach(viewModel.subscriptionSections, id: \.group) { subscriptionSection in
+        ScrollView {
+            VStack(spacing: 16) {
+                ForEach(viewModel.subscriptionSections, id: \.group) { subscriptionSection in
+                    VStack(spacing: 18) {
+                        SubscriptionSectionHeaderView(
+                            title: subscriptionSection.group.title,
+                            count: subscriptionSection.subscriptions.count
+                        )
+                        .padding(.leading, 8)
                         
-                        VStack(spacing: 18) {
-                            SubscriptionSectionHeaderView(
-                                title: subscriptionSection.group.title,
-                                count: subscriptionSection.subscriptions.count
+                        ForEach(subscriptionSection.subscriptions, id: \.identifier) { subscription in
+                            subscriptionView(
+                                imageUrl: subscription.imageUrlString,
+                                title: subscription.name,
+                                action: {
+                                    viewModel.subscriptionTapped(subscription)
+                                }
                             )
-                            .padding(.leading, 8)
-                            
-                            ForEach(subscriptionSection.subscriptions, id: \.identifier) { subscription in
-                                subscriptionView(
-                                    imageUrl: subscription.imageUrlString,
-                                    title: subscription.name,
-                                    action: {}
-                                )
-                            }
                         }
                     }
                 }
-                .padding(.horizontal, 16)
-                .padding(.top, 16)
             }
+            .padding(.horizontal, 16)
+            .padding(.top, 16)
             .navigationTitle("Subscriptions")
             .onAppear {
                 viewModel.onAppear()
@@ -77,7 +76,12 @@ private extension AddSubscriptionView {
 }
 
 #Preview {
-    AddSubscriptionView(
-        viewModel: AddSubscriptionViewModel(repository: SubscriptionsRepositoryImpl())
-    )
+    NavigationStack {
+        AddSubscriptionView(
+            viewModel: AddSubscriptionViewModel(
+                router: AppRouter(),
+                repository: SubscriptionsRepositoryImpl()
+            )
+        )
+    }
 }
