@@ -14,9 +14,9 @@ final class AddSubscriptionViewModel {
     private let router: Router
     private let repository: SubscriptionsRepository
     
-    init(router: Router, repository: SubscriptionsRepository) {
-        self.router = router
+    init(repository: SubscriptionsRepository, router: Router) {
         self.repository = repository
+        self.router = router
     }
     
     func onAppear() {

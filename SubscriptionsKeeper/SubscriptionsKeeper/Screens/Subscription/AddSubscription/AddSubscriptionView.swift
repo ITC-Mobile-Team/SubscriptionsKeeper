@@ -13,7 +13,7 @@ struct AddSubscriptionView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                ForEach(viewModel.subscriptionSections, id: \.group) { subscriptionSection in
+                ForEach(viewModel.subscriptionSections) { subscriptionSection in
                     VStack(spacing: 18) {
                         SubscriptionSectionHeaderView(
                             title: subscriptionSection.group.title,
@@ -21,7 +21,7 @@ struct AddSubscriptionView: View {
                         )
                         .padding(.leading, 8)
                         
-                        ForEach(subscriptionSection.subscriptions, id: \.identifier) { subscription in
+                        ForEach(subscriptionSection.subscriptions) { subscription in
                             subscriptionView(
                                 imageUrl: subscription.imageUrlString,
                                 title: subscription.name,
@@ -79,8 +79,8 @@ private extension AddSubscriptionView {
     NavigationStack {
         AddSubscriptionView(
             viewModel: AddSubscriptionViewModel(
-                router: AppRouter(),
-                repository: SubscriptionsRepositoryImpl()
+                repository: try! SubscriptionsRepositoryImpl(),
+                router: AppRouter()
             )
         )
     }

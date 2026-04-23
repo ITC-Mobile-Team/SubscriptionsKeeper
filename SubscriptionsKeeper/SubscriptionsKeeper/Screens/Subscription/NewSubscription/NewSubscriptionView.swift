@@ -52,7 +52,7 @@ struct NewSubscriptionView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Save") {
-                    
+                    viewModel.saveButtonTapped()
                 }
             }
         }
@@ -105,7 +105,10 @@ struct NewSubscriptionView: View {
     NavigationStack {
         NewSubscriptionView(
             viewModel: NewSubscriptionViewModel(
+                repository: try! SubscriptionsRepositoryImpl(),
+                router: AppRouter(),
                 subscription: Subscription(
+                    id: UUID(),
                     identifier: .chatGPTPlus,
                     group: .ai,
                     name: "ChatGPT Plus",

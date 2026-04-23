@@ -9,13 +9,38 @@ import SwiftUI
 
 @Observable
 final class SubscriptionsViewModel {
+    private let repository: SubscriptionsRepository
     private let router: Router
+    
+    private(set) var subscriptions: [Subscription] = []
 
-    init(router: Router) {
+    init(repository: SubscriptionsRepository, router: Router) {
+        self.repository = repository
         self.router = router
+    }
+    
+    func onAppear() {
+        do throws(DatabaseError) {
+            subscriptions = try repository.fetchAll()
+        } catch {
+            print("[dev] Error feching subscriptions: \(error)")
+        }
     }
 
     func addSubscriptionButtonTapped() {
         router.present(SubscriptionRoute.addSubscription)
+    }
+
+    func delete(at offsets: IndexSet) {
+        for index in offsets {
+            let subscription = subscriptions[index]
+            
+            do throws(DatabaseError) {
+                try repository.delete(id: subscription.id)
+                subscriptions.remove(at: index)
+            } catch {
+                print("[dev] Error deleting subscription: \(error)")
+            }
+        }
     }
 }

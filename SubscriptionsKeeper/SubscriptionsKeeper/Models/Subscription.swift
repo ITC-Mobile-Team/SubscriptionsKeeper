@@ -7,9 +7,10 @@
 
 import Foundation
 
-struct Subscription: Hashable, Equatable {
+struct Subscription: Hashable, Equatable, Identifiable {
     var imageUrlString: String { identifier.imageUrlString }
 
+    var id: UUID
     let identifier: SubscriptionIdentifier
     let group: SubscriptionGroup
     var name: String

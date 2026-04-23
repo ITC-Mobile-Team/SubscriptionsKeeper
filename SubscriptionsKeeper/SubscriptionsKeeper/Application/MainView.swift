@@ -8,20 +8,14 @@
 import SwiftUI
 
 struct MainView: View {
-    @State private var appRouter: AppRouter
-    @State private var addSubscriptionViewModel: AddSubscriptionViewModel
-
-    init() {
-        let router = AppRouter()
-        _appRouter = State(initialValue: router)
-        _addSubscriptionViewModel = State(initialValue: AddSubscriptionViewModel(
-            router: router,
-            repository: SubscriptionsRepositoryImpl()
-        ))
-    }
+    @Environment(SubscriptionsRepositoryImpl.self) private var subscriptionsRepository
+    @State private var appRouter = AppRouter()
+    @State private var subscriptionsViewModel: SubscriptionsViewModel?
+    @State private var addSubscriptionViewModel: AddSubscriptionViewModel?
 
     var body: some View {
-        @Bindable var appRouter = appRouter
+//        @Bindable var appRouter = appRouter
+        
         TabView(selection: $appRouter.selectedTabItem) {
             Tab(
                 "Subscriptions",
@@ -29,13 +23,15 @@ struct MainView: View {
                 value: TabItem.subscriptions
             ) {
                 NavigationStack(path: $appRouter.subscriptionsPath) {
-                    SubscriptionsView(viewModel: SubscriptionsViewModel(router: appRouter))
-                        .navigationDestination(for: SubscriptionPath.self) { route in
-                            switch route {
-                            case .newSubscription:
-                                EmptyView()
+                    if let subscriptionsViewModel {
+                        SubscriptionsView(viewModel: subscriptionsViewModel)
+                            .navigationDestination(for: SubscriptionPath.self) { route in
+                                switch route {
+                                case .newSubscription:
+                                    EmptyView()
+                                }
                             }
-                        }
+                    }
                 }
             }
 
@@ -48,20 +44,37 @@ struct MainView: View {
             }
         }
         .tint(.purple)
+        .task {
+            if subscriptionsViewModel == nil {
+                subscriptionsViewModel = SubscriptionsViewModel(repository: subscriptionsRepository, router: appRouter)
+            }
+            
+            if addSubscriptionViewModel == nil {
+                addSubscriptionViewModel = AddSubscriptionViewModel(repository: subscriptionsRepository, router: appRouter)
+            }
+        }
         .sheet(item: $appRouter.presentedSubscriptionRoute, onDismiss: onSheetDismiss) { route in
             switch route {
             case .addSubscription:
-                NavigationStack(path: $appRouter.sheetPath) {
-                    AddSubscriptionView(viewModel: addSubscriptionViewModel)
-                        .navigationDestination(for: SubscriptionPath.self) { route in
-                            switch route {
-                            case let .newSubscription(subscription):
-                                NewSubscriptionView(viewModel: NewSubscriptionViewModel(subscription: subscription))
+                if let vm = addSubscriptionViewModel {
+                    NavigationStack(path: $appRouter.sheetPath) {
+                        AddSubscriptionView(viewModel: vm)
+                            .navigationDestination(for: SubscriptionPath.self) { route in
+                                switch route {
+                                case let .newSubscription(subscription):
+                                    NewSubscriptionView(
+                                        viewModel: NewSubscriptionViewModel(
+                                            repository: subscriptionsRepository,
+                                            router: appRouter,
+                                            subscription: subscription
+                                        )
+                                    )
+                                }
                             }
-                        }
+                    }
+                    .presentationDragIndicator(.visible)
+                    .presentationDetents([.large])
                 }
-                .presentationDragIndicator(.visible)
-                .presentationDetents([.large])
             }
         }
     }

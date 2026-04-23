@@ -11,14 +11,37 @@ struct SubscriptionsView: View {
     @Bindable var viewModel: SubscriptionsViewModel
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 16) {
+        List {
+            Section {
                 monthlyAverageView
-                
-                emptyView
+            }
+            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 24, trailing: 0))
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
+
+            if viewModel.subscriptions.isEmpty {
+                Section {
+                    emptyView
+                }
+                .listRowInsets(EdgeInsets())
+                .listRowSeparator(.hidden)
+                .listRowBackground(Color.clear)
+            } else {
+                Section {
+                    ForEach(viewModel.subscriptions) { subscription in
+                        SubscriptionView(subscription: subscription)
+                            .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.clear)
+                    }
+                    .onDelete { offsets in
+                        viewModel.delete(at: offsets)
+                    }
+                }
             }
         }
-        .navigationTitle("SubscriptionsKeeper")
+        .listStyle(.plain)
+        .navigationTitle("Subscriptions Keeper")
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -37,6 +60,9 @@ struct SubscriptionsView: View {
                 }
                 .tint(.purple)
             }
+        }
+        .onAppear {
+            viewModel.onAppear()
         }
     }
 }
@@ -164,6 +190,11 @@ private extension SubscriptionsView {
 
 #Preview {
     NavigationStack {
-        SubscriptionsView(viewModel: SubscriptionsViewModel(router: AppRouter()))
+        SubscriptionsView(
+            viewModel: SubscriptionsViewModel(
+                repository: try! SubscriptionsRepositoryImpl(),
+                router: AppRouter()
+            )
+        )
     }
 }

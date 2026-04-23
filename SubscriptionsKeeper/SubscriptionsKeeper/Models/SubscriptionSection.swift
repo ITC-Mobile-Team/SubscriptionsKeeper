@@ -6,7 +6,9 @@
 //
 
 
-struct SubscriptionSection {
+struct SubscriptionSection: Identifiable {
+    var id: SubscriptionGroup { group.id }
+    
     let group: SubscriptionGroup
     let subscriptions: [Subscription]
 }
