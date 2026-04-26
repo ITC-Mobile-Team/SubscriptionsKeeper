@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainView: View {
     @Environment(SubscriptionsRepositoryImpl.self) private var subscriptionsRepository
-    @State private var appRouter = AppRouter()
+    @Bindable private var appRouter = AppRouter()
     @State private var subscriptionsViewModel: SubscriptionsViewModel?
     @State private var addSubscriptionViewModel: AddSubscriptionViewModel?
 
@@ -42,6 +42,14 @@ struct MainView: View {
             ) {
                 Color.green
             }
+            
+            Tab(
+                "Notifications",
+                systemImage: "bell.badge",
+                value: TabItem.notifications
+            ) {
+                Color.blue
+            }
         }
         .tint(.purple)
         .task {
@@ -53,7 +61,7 @@ struct MainView: View {
                 addSubscriptionViewModel = AddSubscriptionViewModel(repository: subscriptionsRepository, router: appRouter)
             }
         }
-        .sheet(item: $appRouter.presentedSubscriptionRoute, onDismiss: onSheetDismiss) { route in
+        .sheet(item: $appRouter.presentedSubscriptionRoute, onDismiss: onSubscriptionSheetDismiss) { route in
             switch route {
             case .addSubscription:
                 if let vm = addSubscriptionViewModel {
@@ -79,7 +87,8 @@ struct MainView: View {
         }
     }
 
-    private func onSheetDismiss() {
+    private func onSubscriptionSheetDismiss() {
         appRouter.sheetPath = NavigationPath()
+        subscriptionsViewModel?.fetchSubscriptions()
     }
 }

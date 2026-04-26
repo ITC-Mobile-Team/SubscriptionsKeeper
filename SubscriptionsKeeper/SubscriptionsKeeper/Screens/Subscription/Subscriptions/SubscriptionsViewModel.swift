@@ -20,10 +20,14 @@ final class SubscriptionsViewModel {
     }
     
     func onAppear() {
+        fetchSubscriptions()
+    }
+    
+    func fetchSubscriptions() {
         do throws(DatabaseError) {
             subscriptions = try repository.fetchAll()
         } catch {
-            print("[dev] Error feching subscriptions: \(error)")
+            print("[dev] Error fetching subscriptions: \(error)")
         }
     }
 

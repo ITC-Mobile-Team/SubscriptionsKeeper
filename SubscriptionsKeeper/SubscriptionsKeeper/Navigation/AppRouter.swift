@@ -12,6 +12,7 @@ final class AppRouter: Router {
     var selectedTabItem: TabItem = .subscriptions
     var subscriptionsPath = NavigationPath()
     var calendarPath = NavigationPath()
+    var notificationsPath = NavigationPath()
     var sheetPath = NavigationPath()
     var presentedSubscriptionRoute: SubscriptionRoute?
 
@@ -26,6 +27,9 @@ final class AppRouter: Router {
             
         case .calendar:
             calendarPath.append(route)
+            
+        case .notifications:
+            notificationsPath.append(route)
         }
     }
 
@@ -51,6 +55,11 @@ final class AppRouter: Router {
             if !calendarPath.isEmpty {
                 calendarPath.removeLast()
             }
+            
+        case .notifications:
+            if !notificationsPath.isEmpty {
+                notificationsPath.removeLast()
+            }
         }
     }
     
@@ -61,6 +70,9 @@ final class AppRouter: Router {
 
         case .calendar:
             calendarPath = NavigationPath()
+            
+        case .notifications:
+            notificationsPath = NavigationPath()
         }
     }
 

@@ -93,6 +93,7 @@ private extension SubscriptionsView {
 
                 HStack(spacing: 12) {
                     statBadge(title: "YEARLY", value: "€0,00")
+                    statBadge(title: "THIS MONTH", value: "€0,00")
                     statBadge(title: "SUBS.", value: "0")
                 }
             }

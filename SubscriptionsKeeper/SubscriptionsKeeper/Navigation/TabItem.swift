@@ -8,4 +8,5 @@
 enum TabItem: Int, Hashable {
     case subscriptions
     case calendar
+    case notifications
 }
