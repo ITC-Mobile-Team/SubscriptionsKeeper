@@ -52,16 +52,7 @@ struct SubscriptionView: View {
 
 #Preview {
     SubscriptionView(
-        subscription: Subscription(
-            id: UUID(),
-            identifier: .claudePro,
-            group: .productivity,
-            name: "Claude Pro",
-            cost: 24.00,
-            currency: .usd,
-            paymentCycle: .monthly,
-            firstPaymentAt: .now
-        )
+        subscription: .preview()
     )
     .padding()
 }

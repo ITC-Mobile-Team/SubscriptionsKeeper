@@ -55,19 +55,19 @@ struct MainView: View {
                 addSubscriptionViewModel = AddSubscriptionViewModel(repository: subscriptionsRepository, router: appRouter)
             }
         }
-        .sheet(item: $appRouter.presentedSubscriptionRoute, onDismiss: onSubscriptionSheetDismiss) { route in
+        .sheet(item: $appRouter.presentedRoute, onDismiss: onSubscriptionSheetDismiss) { route in
             switch route {
             case .addSubscription:
                 if let viewModel = addSubscriptionViewModel {
                     NavigationStack(path: $appRouter.sheetPath) {
                         AddSubscriptionView(viewModel: viewModel)
-                            .navigationDestination(for: SubscriptionRoute.self) { route in
+                            .navigationDestination(for: PresentationRoute.self) { route in
                                 switch route {
-                                case .addSubscription:
-                                    Color.pink
-                                    
                                 case let .newSubscription(subscription, mode):
                                     newSubscriptionView(subscription: subscription, mode: mode)
+                                    
+                                case .addSubscription, .details:
+                                    EmptyView()
                                 }
                             }
                     }
@@ -79,6 +79,32 @@ struct MainView: View {
                 NavigationStack {
                     newSubscriptionView(subscription: subscription, mode: mode)
                 }
+                
+            case let .details(subscription):
+                NavigationStack {
+                    SubscriptionDetailsView(
+                        viewModel: SubscriptionDetailsViewModel(
+                            router: appRouter,
+                            subscription: subscription
+                        )
+                    )
+                }
+            }
+        }
+        .fullScreenCover(item: $appRouter.fullScreenPresentedRoute) { route in
+            switch route {
+            case let .details(subscription):
+                NavigationStack {
+                    SubscriptionDetailsView(
+                        viewModel: SubscriptionDetailsViewModel(
+                            router: appRouter,
+                            subscription: subscription
+                        )
+                    )
+                }
+                
+            case .addSubscription, .newSubscription:
+                EmptyView()
             }
         }
     }

@@ -7,7 +7,8 @@
 
 protocol Router {
     func push(_ route: any Hashable)
-    func present(_ route: any Hashable)
+    func present(_ route: PresentationRoute)
+    func fullScreenPresent(_ route: PresentationRoute)
     func pop()
     func popToRoot()
     func dismiss()

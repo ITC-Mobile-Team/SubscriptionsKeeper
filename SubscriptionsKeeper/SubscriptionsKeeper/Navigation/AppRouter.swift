@@ -14,10 +14,11 @@ final class AppRouter: Router {
     var calendarPath = NavigationPath()
     var notificationsPath = NavigationPath()
     var sheetPath = NavigationPath()
-    var presentedSubscriptionRoute: SubscriptionRoute?
+    var presentedRoute: PresentationRoute?
+    var fullScreenPresentedRoute: PresentationRoute?
 
     func push(_ route: any Hashable) {
-        if presentedSubscriptionRoute != nil {
+        if presentedRoute != nil || fullScreenPresentedRoute != nil {
             sheetPath.append(route)
             return
         }
@@ -33,14 +34,16 @@ final class AppRouter: Router {
         }
     }
 
-    func present(_ route: any Hashable) {
-        if let route = route as? SubscriptionRoute {
-            presentedSubscriptionRoute = route
-        }
+    func present(_ route: PresentationRoute) {
+        presentedRoute = route
+    }
+    
+    func fullScreenPresent(_ route: PresentationRoute) {
+        fullScreenPresentedRoute = route
     }
 
     func pop() {
-        if presentedSubscriptionRoute != nil, !sheetPath.isEmpty {
+        if presentedRoute != nil || fullScreenPresentedRoute != nil, !sheetPath.isEmpty {
             sheetPath.removeLast()
             return
         }
@@ -77,6 +80,7 @@ final class AppRouter: Router {
     }
 
     func dismiss() {
-        presentedSubscriptionRoute = nil
+        presentedRoute = nil
+        fullScreenPresentedRoute = nil
     }
 }

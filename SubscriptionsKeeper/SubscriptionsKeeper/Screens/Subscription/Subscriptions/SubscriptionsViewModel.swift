@@ -32,7 +32,7 @@ final class SubscriptionsViewModel {
     }
 
     func addSubscriptionButtonTapped() {
-        router.present(SubscriptionRoute.addSubscription)
+        router.present(PresentationRoute.addSubscription)
     }
 
     func delete(at offsets: IndexSet) {
@@ -49,6 +49,6 @@ final class SubscriptionsViewModel {
     }
     
     func subscriptionTapped(_ subscription: Subscription) {
-        router.present(SubscriptionRoute.newSubscription(subscription, mode: .edit))
+        router.fullScreenPresent(PresentationRoute.details(subscription: subscription))
     }
 }

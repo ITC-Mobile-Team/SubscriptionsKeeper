@@ -24,6 +24,6 @@ final class AddSubscriptionViewModel {
     }
     
     func subscriptionTapped(_ subscription: Subscription) {
-        router.push(SubscriptionRoute.newSubscription(subscription, mode: .create))
+        router.push(PresentationRoute.newSubscription(subscription, mode: .create))
     }
 }

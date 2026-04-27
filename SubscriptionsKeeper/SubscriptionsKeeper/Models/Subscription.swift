@@ -20,3 +20,18 @@ struct Subscription: Hashable, Equatable, Identifiable {
     var paymentCycle: PaymentCycle = .monthly
     var firstPaymentAt: Date = .now
 }
+
+extension Subscription {
+    static func preview(identifier: SubscriptionIdentifier = .claudePro, name: String = "Claude Pro") -> Self {
+        Subscription(
+            id: UUID(),
+            identifier: identifier,
+            group: .ai,
+            name: name,
+            cost: 24.00,
+            currency: .usd,
+            paymentCycle: .monthly,
+            firstPaymentAt: .now
+        )
+    }
+}
