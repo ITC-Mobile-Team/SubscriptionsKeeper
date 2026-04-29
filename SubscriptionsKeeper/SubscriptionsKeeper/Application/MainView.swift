@@ -55,7 +55,7 @@ struct MainView: View {
                 addSubscriptionViewModel = AddSubscriptionViewModel(repository: subscriptionsRepository, router: appRouter)
             }
         }
-        .sheet(item: $appRouter.presentedRoute, onDismiss: onSubscriptionSheetDismiss) { route in
+        .sheet(item: $appRouter.presentedRoute, onDismiss: onSheetDismiss) { route in
             switch route {
             case .addSubscription:
                 if let viewModel = addSubscriptionViewModel {
@@ -84,6 +84,7 @@ struct MainView: View {
                 NavigationStack {
                     SubscriptionDetailsView(
                         viewModel: SubscriptionDetailsViewModel(
+                            repository: subscriptionsRepository,
                             router: appRouter,
                             subscription: subscription
                         )
@@ -91,12 +92,13 @@ struct MainView: View {
                 }
             }
         }
-        .fullScreenCover(item: $appRouter.fullScreenPresentedRoute) { route in
+        .fullScreenCover(item: $appRouter.fullScreenPresentedRoute, onDismiss: onSheetDismiss) { route in
             switch route {
             case let .details(subscription):
                 NavigationStack {
                     SubscriptionDetailsView(
                         viewModel: SubscriptionDetailsViewModel(
+                            repository: subscriptionsRepository,
                             router: appRouter,
                             subscription: subscription
                         )
@@ -120,7 +122,7 @@ struct MainView: View {
         )
     }
 
-    private func onSubscriptionSheetDismiss() {
+    private func onSheetDismiss() {
         appRouter.sheetPath = NavigationPath()
         subscriptionsViewModel?.fetchSubscriptions()
     }

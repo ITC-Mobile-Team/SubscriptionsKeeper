@@ -9,6 +9,7 @@ import SwiftUI
 
 @Observable
 final class SubscriptionDetailsViewModel {
+    var showDeleteAlert = false
     var isActive: Bool { true }
 
     var perPaymentFormatted: String {
@@ -27,10 +28,12 @@ final class SubscriptionDetailsViewModel {
         return formatter.string(from: date)
     }
 
+    private let repository: SubscriptionsRepository
     let router: Router
     let subscription: Subscription
 
-    init(router: Router, subscription: Subscription) {
+    init(repository: SubscriptionsRepository, router: Router, subscription: Subscription) {
+        self.repository = repository
         self.router = router
         self.subscription = subscription
     }
@@ -45,7 +48,16 @@ final class SubscriptionDetailsViewModel {
     }
     
     func removeButtonTapped() {
-        
+        showDeleteAlert = true
+    }
+
+    func deleteConfirmed() {
+        do {
+            try repository.delete(id: subscription.id)
+            router.dismiss()
+        } catch {
+            print("[dev] error when remove subscription: \(error)")
+        }
     }
 }
 

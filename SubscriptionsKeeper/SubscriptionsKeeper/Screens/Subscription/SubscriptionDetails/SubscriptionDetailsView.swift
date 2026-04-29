@@ -30,6 +30,15 @@ struct SubscriptionDetailsView: View {
             }
         }
         .ignoresSafeArea()
+        .alert("Delete \(viewModel.subscription.name)?", isPresented: $viewModel.showDeleteAlert) {
+            Button("Cancel", role: .cancel) {}
+            
+            Button("Delete", role: .destructive) {
+                viewModel.deleteConfirmed()
+            }
+        } message: {
+            Text("This subscription will be permanently removed.")
+        }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -169,6 +178,7 @@ struct SubscriptionDetailsView: View {
     NavigationStack {
         SubscriptionDetailsView(
             viewModel: SubscriptionDetailsViewModel(
+                repository: try! SubscriptionsRepositoryImpl(),
                 router: AppRouter(),
                 subscription: .preview(identifier: .iCloudPlus, name: "iCloud+")
             )
