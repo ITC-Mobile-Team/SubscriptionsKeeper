@@ -46,6 +46,16 @@ struct SubscriptionsView: View {
         }
         .listStyle(.plain)
         .navigationTitle("Subscriptions Keeper")
+        .alert("Delete \(viewModel.removedSubscription?.name ?? "")?", isPresented: $viewModel.showDeleteAlert) {
+            Button("Cancel", role: .cancel) {}
+
+            Button("Delete", role: .destructive) {
+                viewModel.deleteConfirmed()
+            }
+        } message: {
+            Text("This subscription will be permanently removed.")
+        }
+        .tint(.blue)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {

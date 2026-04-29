@@ -13,6 +13,8 @@ final class SubscriptionsViewModel {
     private let router: Router
     
     private(set) var subscriptions: [Subscription] = []
+    var showDeleteAlert = false
+    var removedSubscription: Subscription?
 
     init(repository: SubscriptionsRepository, router: Router) {
         self.repository = repository
@@ -36,16 +38,20 @@ final class SubscriptionsViewModel {
     }
 
     func delete(at offsets: IndexSet) {
-        for index in offsets {
-            let subscription = subscriptions[index]
-            
-            do throws(DatabaseError) {
-                try repository.delete(id: subscription.id)
-                subscriptions.remove(at: index)
-            } catch {
-                print("[dev] Error deleting subscription: \(error)")
-            }
+        guard let index = offsets.first else { return }
+        removedSubscription = subscriptions[index]
+        showDeleteAlert = true
+    }
+
+    func deleteConfirmed() {
+        guard let subscription = removedSubscription else { return }
+        do throws(DatabaseError) {
+            try repository.delete(id: subscription.id)
+            subscriptions.removeAll { $0.id == subscription.id }
+        } catch {
+            print("[dev] Error deleting subscription: \(error)")
         }
+        removedSubscription = nil
     }
     
     func subscriptionTapped(_ subscription: Subscription) {
