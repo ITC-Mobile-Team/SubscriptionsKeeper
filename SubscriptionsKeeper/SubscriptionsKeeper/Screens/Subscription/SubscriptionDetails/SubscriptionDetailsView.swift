@@ -23,6 +23,10 @@ struct SubscriptionDetailsView: View {
                     VStack(spacing: 12) {
                         statusSection
                         infoSection
+
+                        if viewModel.showDashboardValues {
+                            dashboardSection
+                        }
                     }
                     .padding(.horizontal)
                     .padding(.bottom, 24)
@@ -77,11 +81,19 @@ struct SubscriptionDetailsView: View {
             .clipShape(RoundedRectangle(cornerRadius: 22))
             .shadow(color: .black.opacity(0.08), radius: 8, y: 2)
 
-            Text(viewModel.subscription.name)
-                .font(.title.bold())
+            VStack(spacing: 4) {
+                Text(viewModel.subscription.name)
+                    .font(.title.bold())
+                
+                if !viewModel.subscription.description.isEmpty {
+                    Text(viewModel.subscription.description)
+                        .font(.callout.weight(.medium))
+                        .foregroundStyle(Color(.darkGray))
+                }
+            }
         }
-        .padding(.top, 200)
-        .padding(.bottom, 100)
+        .padding(.top, 150)
+        .padding(.bottom, 50)
     }
 
     private var statusSection: some View {
@@ -133,15 +145,48 @@ struct SubscriptionDetailsView: View {
             }
         }
     }
+
+    private var dashboardSection: some View {
+        ContentSectionView {
+            ContentFieldView(icon: "arrow.left.arrow.right", label: "Dashboard value") {
+                if let value = viewModel.subscription.formattedConvertedCost() {
+                    Text(value)
+                        .font(.subheadline.weight(.semibold))
+                } else {
+                    ProgressView()
+                }
+            }
+
+            ContentSectionDivider()
+
+            ContentFieldView(icon: "chart.bar.fill", label: "Dashboard yearly") {
+                if let value = viewModel.subscription.formattedConvertedYearlyCost() {
+                    Text(value)
+                        .font(.subheadline.weight(.semibold))
+                } else {
+                    ProgressView()
+                }
+            }
+        }
+    }
 }
 
 #Preview {
     NavigationStack {
         SubscriptionDetailsView(
             viewModel: SubscriptionDetailsViewModel(
-                repository: try! SubscriptionsRepositoryImpl(),
+                subscriptionsRepository: try! SubscriptionsRepositoryImpl(
+                    userRepository: UserRepositoryImpl(),
+                    rateRepository: RateRepositoryImpl()
+                ),
+                userRepository: UserRepositoryImpl(),
+                rateRepository: RateRepositoryImpl(),
                 router: AppRouter(),
-                subscription: .preview(identifier: .iCloudPlus, name: "iCloud+")
+                subscription: .preview(
+                    identifier: .iCloudPlus,
+                    name: "iCloud+",
+                    description: "Students"
+                )
             )
         )
     }

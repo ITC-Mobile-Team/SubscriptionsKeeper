@@ -13,12 +13,11 @@ final class SubscriptionDetailsViewModel {
     var isActive: Bool { true }
 
     var perPaymentFormatted: String {
-        subscription.cost.formatted(currency: subscription.currency) + " " + subscription.currency.abbreviation
+        subscription.cost.formatted(.price(currency: subscription.currency))
     }
 
     var yearlyCostFormatted: String {
-        let yearly = subscription.paymentCycle == .monthly ? subscription.cost * 12 : subscription.cost
-        return yearly.formatted(currency: subscription.currency) + " " + subscription.currency.abbreviation
+        subscription.yearlyCost.formatted(.price(currency: subscription.currency))
     }
 
     var nextPaymentDateFormatted: String {
@@ -28,12 +27,28 @@ final class SubscriptionDetailsViewModel {
         return formatter.string(from: date)
     }
 
-    private let repository: SubscriptionsRepository
+    var showDashboardValues: Bool {
+        userRepository.showDashboardValues(for: subscription.currency)
+    }
+
+    private let subscriptionsRepository: SubscriptionsRepository
+    private let userRepository: UserRepository
+    private let rateRepository: RateRepository
     let router: Router
     let subscription: Subscription
+    
+    private var rate: Rate?
 
-    init(repository: SubscriptionsRepository, router: Router, subscription: Subscription) {
-        self.repository = repository
+    init(
+        subscriptionsRepository: SubscriptionsRepository,
+        userRepository: UserRepository,
+        rateRepository: RateRepository,
+        router: Router,
+        subscription: Subscription
+    ) {
+        self.subscriptionsRepository = subscriptionsRepository
+        self.userRepository = userRepository
+        self.rateRepository = rateRepository
         self.router = router
         self.subscription = subscription
     }
@@ -53,7 +68,7 @@ final class SubscriptionDetailsViewModel {
 
     func deleteConfirmed() {
         do {
-            try repository.delete(id: subscription.id)
+            try subscriptionsRepository.delete(id: subscription.id)
             router.dismiss()
         } catch {
             print("[dev] error when remove subscription: \(error)")

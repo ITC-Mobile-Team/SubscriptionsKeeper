@@ -75,8 +75,8 @@ struct SubscriptionsView: View {
                 .tint(.purple)
             }
         }
-        .onAppear {
-            viewModel.onAppear()
+        .task {
+            await viewModel.onAppear()
         }
         .safeAreaPadding(.bottom, 24)
     }
@@ -208,8 +208,12 @@ private extension SubscriptionsView {
     NavigationStack {
         SubscriptionsView(
             viewModel: SubscriptionsViewModel(
-                subscriptionsRepository: try! SubscriptionsRepositoryImpl(),
+                subscriptionsRepository: try! SubscriptionsRepositoryImpl(
+                    userRepository: UserRepositoryImpl(),
+                    rateRepository: RateRepositoryImpl()
+                ),
                 userRepository: UserRepositoryImpl(),
+                rateRepository: RateRepositoryImpl(),
                 router: AppRouter()
             )
         )

@@ -19,15 +19,38 @@ struct Subscription: Hashable, Equatable, Identifiable {
     var currency: Currency
     var paymentCycle: PaymentCycle = .monthly
     var firstPaymentAt: Date = .now
+    var dashboardCost: Double?
+    var dashboardCurrency: Currency?
 }
 
 extension Subscription {
-    static func preview(identifier: SubscriptionIdentifier = .claudePro, name: String = "Claude Pro") -> Self {
+    var yearlyCost: Double {
+        paymentCycle == .monthly ? cost * 12 : cost
+    }
+    
+    func formattedConvertedCost() -> String? {
+        guard let dashboardCost, let dashboardCurrency else { return nil }
+        return "~ " + (dashboardCost).formatted(.price(currency: dashboardCurrency))
+    }
+
+    func formattedConvertedYearlyCost() -> String? {
+        guard let dashboardCost, let dashboardCurrency else { return nil }
+        return "~ " + (12 * dashboardCost).formatted(.price(currency: dashboardCurrency))
+    }
+}
+
+extension Subscription {
+    static func preview(
+        identifier: SubscriptionIdentifier = .claudePro,
+        name: String = "Claude Pro",
+        description: String = ""
+    ) -> Self {
         Subscription(
             id: UUID(),
             identifier: identifier,
             group: .ai,
             name: name,
+            description: description,
             cost: 24.00,
             currency: .usd,
             paymentCycle: .monthly,

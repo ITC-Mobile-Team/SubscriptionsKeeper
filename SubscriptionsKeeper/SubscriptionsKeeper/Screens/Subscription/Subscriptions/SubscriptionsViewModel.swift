@@ -7,15 +7,16 @@
 
 import SwiftUI
 
+@MainActor
 @Observable
 final class SubscriptionsViewModel {
     var monthlyAverage: String {
-        allSubscriptionsCost.formatted(currency: currency)
+        allSubscriptionsCost.formatted(.price(currency: currency))
     }
     
     var yearly: String {
         let cost = allSubscriptionsCost * 12
-        return cost.formatted(currency: currency)
+        return cost.formatted(.price(currency: currency))
     }
     
     var subscriptionsCount: String {
@@ -24,9 +25,8 @@ final class SubscriptionsViewModel {
     
     private var allSubscriptionsCost: Double {
         let average: Double = subscriptions
-            .filter({ $0.currency == currency })
             .reduce(0.0) { partialResult, subscription in
-                partialResult + subscription.cost
+                partialResult + (subscription.dashboardCost ?? subscription.cost)
             }
         return average
     }
@@ -38,28 +38,31 @@ final class SubscriptionsViewModel {
     private(set) var subscriptions: [Subscription] = []
     var showDeleteAlert = false
     var removedSubscription: Subscription?
-    
+
     private let subscriptionsRepository: SubscriptionsRepository
     private let userRepository: UserRepository
+    private let rateRepository: RateRepository
     private let router: Router
 
     init(
         subscriptionsRepository: SubscriptionsRepository,
         userRepository: UserRepository,
+        rateRepository: RateRepository,
         router: Router
     ) {
         self.subscriptionsRepository = subscriptionsRepository
         self.userRepository = userRepository
+        self.rateRepository = rateRepository
         self.router = router
     }
     
-    func onAppear() {
-        fetchSubscriptions()
+    func onAppear() async {
+        await fetchSubscriptions()
     }
     
-    func fetchSubscriptions() {
+    func fetchSubscriptions() async {
         do throws(DatabaseError) {
-            subscriptions = try subscriptionsRepository.fetchAll()
+            subscriptions = try await subscriptionsRepository.fetchAll()
         } catch {
             print("[dev] Error fetching subscriptions: \(error)")
         }

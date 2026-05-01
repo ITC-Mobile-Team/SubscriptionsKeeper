@@ -79,7 +79,10 @@ private extension AddSubscriptionView {
     NavigationStack {
         AddSubscriptionView(
             viewModel: AddSubscriptionViewModel(
-                repository: try! SubscriptionsRepositoryImpl(),
+                repository: try! SubscriptionsRepositoryImpl(
+                    userRepository: UserRepositoryImpl(),
+                    rateRepository: RateRepositoryImpl()
+                ),
                 router: AppRouter()
             )
         )

@@ -9,6 +9,8 @@ import Foundation
 
 protocol UserRepository {
     var currentCurrency: Currency { get set }
+    
+    func showDashboardValues(for currency: Currency) -> Bool
 }
 
 @Observable
@@ -25,5 +27,9 @@ final class UserRepositoryImpl: UserRepository {
     
     init() {
         self.currentCurrency = localStore.load(forKey: currencyKey) ?? defaultCurrency
+    }
+    
+    func showDashboardValues(for currency: Currency) -> Bool {
+        currentCurrency != currency
     }
 }

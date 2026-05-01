@@ -38,14 +38,19 @@ struct SubscriptionView: View {
             Spacer()
 
             VStack(alignment: .trailing, spacing: 2) {
-                Text(subscription.cost.formatted(.price(currency: subscription.currency)))
-                    .font(.system(size: 17, weight: .bold))
-                    .foregroundStyle(.primary)
-
-                //TODO: - add display after implementation Settings
-//                Text("\(subscription.cost.formatted(.price(currency: subscription.currency))) \(subscription.currency.abbreviation)")
-//                    .font(.caption)
-//                    .foregroundStyle(.secondary)
+                if let dashboardCost = subscription.formattedConvertedCost() {
+                    Text(dashboardCost)
+                        .font(.system(size: 17, weight: .bold))
+                        .foregroundStyle(.primary)
+                    
+                    Text(subscription.cost.formatted(.price(currency: subscription.currency)))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                } else {
+                    Text(subscription.cost.formatted(.price(currency: subscription.currency)))
+                        .font(.system(size: 17, weight: .bold))
+                        .foregroundStyle(.primary)
+                }
 
                 Text(subscription.firstPaymentAt, format: .dateTime.day().month(.abbreviated))
                     .font(.caption)

@@ -25,9 +25,3 @@ extension FormatStyle where Self == PriceFormatStyle {
         PriceFormatStyle(currency: currency)
     }
 }
-
-extension Double {
-    func formatted(currency: Currency) -> String {
-        PriceFormatStyle(currency: currency).format(self)
-    }
-}

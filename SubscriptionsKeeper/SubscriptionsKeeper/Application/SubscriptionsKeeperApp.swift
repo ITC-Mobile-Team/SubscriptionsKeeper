@@ -9,13 +9,18 @@ import SwiftUI
 
 @main
 struct SubscriptionsKeeperApp: App {
-    @State private var subscriptionsRepository: SubscriptionsRepositoryImpl
     @State private var userRepository: UserRepositoryImpl
+    @State private var rateRepository: RateRepositoryImpl
+    @State private var subscriptionsRepository: SubscriptionsRepositoryImpl
 
     init() {
         do throws(DatabaseError) {
-            _subscriptionsRepository = State(initialValue: try SubscriptionsRepositoryImpl())
-            _userRepository = State(initialValue: UserRepositoryImpl())
+            let userRepository = UserRepositoryImpl()
+            let rateRepository = RateRepositoryImpl()
+            
+            _userRepository = State(initialValue: userRepository)
+            _rateRepository = State(initialValue: rateRepository)
+            _subscriptionsRepository = State(initialValue: try SubscriptionsRepositoryImpl(userRepository: userRepository, rateRepository: rateRepository))
         } catch {
             fatalError("Failed to initialize database: \(error)")
         }
@@ -26,6 +31,7 @@ struct SubscriptionsKeeperApp: App {
             MainView()
                 .environment(subscriptionsRepository)
                 .environment(userRepository)
+                .environment(rateRepository)
         }
     }
 }

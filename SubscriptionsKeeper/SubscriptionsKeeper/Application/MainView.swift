@@ -10,7 +10,8 @@ import SwiftUI
 struct MainView: View {
     @Environment(SubscriptionsRepositoryImpl.self) private var subscriptionsRepository
     @Environment(UserRepositoryImpl.self) private var userRepository
-    
+    @Environment(RateRepositoryImpl.self) private var rateRepository
+
     @Bindable private var appRouter = AppRouter()
     @State private var subscriptionsViewModel: SubscriptionsViewModel?
     @State private var addSubscriptionViewModel: AddSubscriptionViewModel?
@@ -49,10 +50,13 @@ struct MainView: View {
         }
         .tint(.purple)
         .task {
+            try? await rateRepository.setup(currency: userRepository.currentCurrency)
+            
             if subscriptionsViewModel == nil {
                 subscriptionsViewModel = SubscriptionsViewModel(
                     subscriptionsRepository: subscriptionsRepository,
                     userRepository: userRepository,
+                    rateRepository: rateRepository,
                     router: appRouter
                 )
             }
@@ -88,7 +92,9 @@ struct MainView: View {
                 NavigationStack {
                     SubscriptionDetailsView(
                         viewModel: SubscriptionDetailsViewModel(
-                            repository: subscriptionsRepository,
+                            subscriptionsRepository: subscriptionsRepository,
+                            userRepository: userRepository,
+                            rateRepository: rateRepository,
                             router: appRouter,
                             subscription: subscription
                         )
@@ -114,7 +120,9 @@ struct MainView: View {
                 NavigationStack {
                     SubscriptionDetailsView(
                         viewModel: SubscriptionDetailsViewModel(
-                            repository: subscriptionsRepository,
+                            subscriptionsRepository: subscriptionsRepository,
+                            userRepository: userRepository,
+                            rateRepository: rateRepository,
                             router: appRouter,
                             subscription: subscription
                         )
@@ -140,6 +148,9 @@ struct MainView: View {
 
     private func onSheetDismiss() {
         appRouter.sheetPath = NavigationPath()
-        subscriptionsViewModel?.fetchSubscriptions()
+        
+        Task {
+            await subscriptionsViewModel?.fetchSubscriptions()
+        }
     }
 }
