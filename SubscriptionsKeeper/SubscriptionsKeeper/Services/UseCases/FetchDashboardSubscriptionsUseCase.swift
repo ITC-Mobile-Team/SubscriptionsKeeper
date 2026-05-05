@@ -32,17 +32,16 @@ final class FetchDashboardSubscriptionsUseCaseImpl: FetchDashboardSubscriptionsU
             let targetCurrency = userRepository.currentCurrency
             
             for (index, subscription) in subscriptions.enumerated() {
-                if subscription.currency != targetCurrency {
-                    let rates = try await rateRepository.fetchRate(baseCurrency: subscription.currency)
-                    
-                    if let rate = rates.first(where: { $0.currency == targetCurrency }) {
-                        subscriptions[index].dashboardCost = subscription.cost * rate.amount
-                        
-                        print("[dev] rate.amount: \(rate.amount) for sub: \(subscription)")
-                    }
-                    
-                    subscriptions[index].dashboardCurrency = targetCurrency
+                guard subscription.currency != targetCurrency else {
+                    continue
                 }
+                let rates = try await rateRepository.fetchRate(baseCurrency: subscription.currency)
+                
+                guard let rate = rates.first(where: { $0.currency == targetCurrency }) else {
+                    continue
+                }
+                subscriptions[index].dashboardCost = subscription.cost * rate.amount
+                subscriptions[index].dashboardCurrency = targetCurrency
             }
             
             return subscriptions
