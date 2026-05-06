@@ -207,7 +207,6 @@ private extension CalendarView {
         let offset = viewModel.firstWeekdayOffset
         let totalSlots = offset + days.count
         let rows = (totalSlots + 6) / 7
-
         return Grid(alignment: .top, horizontalSpacing: 6, verticalSpacing: 8) {
             // Weekday headers
             GridRow {
@@ -240,9 +239,7 @@ private extension CalendarView {
     }
 
     func calendarDayView(day: Int) -> some View {
-        let isToday = viewModel.isToday(day: day)
         let daySubscriptions = viewModel.subscriptionsForDay(day)
-
         return VStack(spacing: 4) {
             Text(day.description)
                 .font(.body)
@@ -274,10 +271,22 @@ private extension CalendarView {
         .frame(maxWidth: .infinity, minHeight: 50)
         .background(Color(.systemGray6))
         .clipShape(RoundedRectangle(cornerRadius: 12))
-        .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(isToday ? Color.purple.opacity(0.6) : Color.clear, lineWidth: 2)
-        )
+        .overlay {
+            if viewModel.isToday(day: day) {
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(viewModel.isToday(day: day) ? Color.purple.opacity(0.6) : Color.clear, lineWidth: 2)
+            } else if day == viewModel.selectedDay {
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(
+                        LinearGradient(
+                            colors: daySubscriptions.first?.identifier.gradientColors ?? [],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ),
+                        lineWidth: 2
+                    )
+            }
+        }
         .onTapGesture {
             guard !daySubscriptions.isEmpty else { return }
             withAnimation {
