@@ -188,10 +188,21 @@ private extension CalendarView {
                 .padding(.top, 6)
 
             if let first = daySubscriptions.first {
-                RemoteImageView(stringUrl: first.imageUrlString)
-                    .scaledToFit()
-                    .frame(width: 28, height: 28)
-                    .clipShape(RoundedRectangle(cornerRadius: 7))
+                VStack(spacing: 2) {
+                    RemoteImageView(stringUrl: first.imageUrlString)
+                        .scaledToFit()
+                        .frame(width: 28, height: 28)
+                        .clipShape(RoundedRectangle(cornerRadius: 7))
+                    
+                    if daySubscriptions.count > 1 {
+                        Text("+" + (daySubscriptions.count - 1).description)
+                            .font(.system(size: 8, weight: .semibold))
+                            .foregroundStyle(.primary)
+                            .padding(3)
+                            .background(Color(.systemGray5))
+                            .clipShape(Capsule())
+                    }
+                }
             }
 
             Spacer(minLength: 0)
