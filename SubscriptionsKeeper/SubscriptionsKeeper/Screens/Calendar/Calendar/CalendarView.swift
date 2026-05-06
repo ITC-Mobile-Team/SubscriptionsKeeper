@@ -100,6 +100,7 @@ private extension CalendarView {
                         endPoint: .bottomTrailing
                     )
                 )
+                .shadow(color: .black.opacity(0.3), radius: 8, y: 4)
 
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
@@ -163,9 +164,9 @@ private extension CalendarView {
     }
     
     var calendarHeaderView: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: 16) {
             Button {
-                viewModel.goToPreviousMonth()
+                viewModel.previousMonthButtonTapped()
             } label: {
                 Image(systemName: "chevron.left")
                     .fontWeight(.bold)
@@ -181,16 +182,33 @@ private extension CalendarView {
                 Text(viewModel.monthTitle)
                     .font(.title2)
                     .fontWeight(.bold)
+                    .minimumScaleFactor(0.5)
+                    .lineLimit(1)
 
                 Text(viewModel.yearTitle)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
-
-            Spacer()
+            
+            Spacer(minLength: 8)
+            
+            if !viewModel.isToday {
+                Button {
+                    viewModel.todayButtonTapped()
+                } label: {
+                    Text("Today")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.blue)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 10)
+                        .background(Color.blue.opacity(0.12))
+                        .clipShape(Capsule())
+                }
+            }
 
             Button {
-                viewModel.goToNextMonth()
+                viewModel.nextMonthButtonTapped()
             } label: {
                 Image(systemName: "chevron.right")
                     .fontWeight(.bold)
@@ -289,7 +307,7 @@ private extension CalendarView {
         }
         .onTapGesture {
             guard !daySubscriptions.isEmpty else { return }
-            withAnimation {
+            withAnimation(.smooth(duration: 0.25)) {
                 viewModel.selectedDay = day
             }
         }

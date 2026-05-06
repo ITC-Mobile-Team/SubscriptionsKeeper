@@ -5,7 +5,7 @@
 //  Created by Bohdan Pokhidnia on 04.05.2026.
 //
 
-import Foundation
+import SwiftUI
 
 @Observable
 final class CalendarViewModel {
@@ -27,7 +27,7 @@ final class CalendarViewModel {
         return subscriptionsForCurrentMonth
             .compactMap { subscription -> Date? in
                 let paymentDay = calendar.component(.day, from: subscription.firstPaymentAt)
-                var components = calendar.dateComponents([.year, .month], from: today)
+                var components = calendar.dateComponents([.year, .month], from: selectedMonth)
                 components.day = paymentDay
                 guard let date = calendar.date(from: components),
                       let todayDay = componentsToday.day,
@@ -38,11 +38,16 @@ final class CalendarViewModel {
             }
             .min()
     }
+    
+    var isToday: Bool {
+        selectedMonth == today
+    }
 
     var selectedDay: Int?
-    private var today: Date = .now
     private(set) var subscriptions: [Subscription] = []
 
+    private var selectedMonth: Date = .now
+    private let today: Date = .now
     private let fetchDashboardSubscriptions: FetchDashboardSubscriptionsUseCase
     private let userRepository: UserRepository
     private let calendar = Calendar.current
@@ -68,7 +73,7 @@ final class CalendarViewModel {
     }
 
     private var subscriptionsForCurrentMonth: [Subscription] {
-        let monthComponents = calendar.dateComponents([.year, .month], from: today)
+        let monthComponents = calendar.dateComponents([.year, .month], from: selectedMonth)
         return subscriptions.filter { subscription in
             let paymentDay = calendar.component(.day, from: subscription.firstPaymentAt)
             var components = monthComponents
@@ -84,18 +89,18 @@ final class CalendarViewModel {
     }
 
     var monthTitle: String {
-        today.formatted(.dateTime.month(.wide))
+        selectedMonth.formatted(.dateTime.month(.wide))
     }
 
     var yearTitle: String {
-        today.formatted(.dateTime.year())
+        selectedMonth.formatted(.dateTime.year())
     }
 
     var daysInMonth: [DateComponents] {
-        guard let range = calendar.range(of: .day, in: .month, for: today) else {
+        guard let range = calendar.range(of: .day, in: .month, for: selectedMonth) else {
             return []
         }
-        let components = calendar.dateComponents([.year, .month], from: today)
+        let components = calendar.dateComponents([.year, .month], from: selectedMonth)
         return range.map {
             DateComponents(year: components.year, month: components.month, day: $0)
         }
@@ -103,7 +108,7 @@ final class CalendarViewModel {
 
     /// Number of empty cells before the 1st day, respecting the system's first weekday setting
     var firstWeekdayOffset: Int {
-        let components = calendar.dateComponents([.year, .month], from: today)
+        let components = calendar.dateComponents([.year, .month], from: selectedMonth)
         guard let firstDay = calendar.date(from: components) else { return 0 }
         let weekday = calendar.component(.weekday, from: firstDay) // 1=Sunday, 2=Monday, ...
         // Shift relative to the user's first weekday
@@ -112,7 +117,7 @@ final class CalendarViewModel {
 
     func isToday(day: Int) -> Bool {
         let components = calendar.dateComponents([.year, .month, .day], from: Date())
-        let monthComponents = calendar.dateComponents([.year, .month], from: today)
+        let monthComponents = calendar.dateComponents([.year, .month], from: selectedMonth)
         return components.year == monthComponents.year
             && components.month == monthComponents.month
             && components.day == day
@@ -120,7 +125,7 @@ final class CalendarViewModel {
 
     func selectedDayDate() -> Date? {
         guard let selectedDay else { return nil }
-        var components = calendar.dateComponents([.year, .month], from: today)
+        var components = calendar.dateComponents([.year, .month], from: selectedMonth)
         components.day = selectedDay
         return calendar.date(from: components)
     }
@@ -136,17 +141,32 @@ final class CalendarViewModel {
         }
     }
 
-    func goToPreviousMonth() {
-        guard let newDate = calendar.date(byAdding: .month, value: -1, to: today) else {
+    func previousMonthButtonTapped() {
+        guard let newDate = calendar.date(byAdding: .month, value: -1, to: selectedMonth) else {
             return
         }
-        today = newDate
+        selectedMonth = newDate
+        
+        withAnimation(.easeInOut(duration: 0.3)) {
+            selectedDay = nil
+        }
     }
 
-    func goToNextMonth() {
-        guard let newDate = calendar.date(byAdding: .month, value: 1, to: today) else {
+    func nextMonthButtonTapped() {
+        guard let newDate = calendar.date(byAdding: .month, value: 1, to: selectedMonth) else {
             return
         }
-        today = newDate
+        selectedMonth = newDate
+        
+        withAnimation(.easeInOut(duration: 0.3)) {
+            selectedDay = nil
+        }
+    }
+
+    func todayButtonTapped() {
+        withAnimation(.spring(duration: 0.4, bounce: 0.15)) {
+            selectedMonth = today
+            selectedDay = nil
+        }
     }
 }
