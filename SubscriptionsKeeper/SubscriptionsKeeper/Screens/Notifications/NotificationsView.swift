@@ -12,19 +12,18 @@ struct NotificationsView: View {
     
     var body: some View {
         List {
-            Section {
-                ForEach(viewModel.subscriptions) { subscription in
-                    SubscriptionNotificationView(
-                        subscription: subscription,
-                        isOn: Binding(
-                            get: { viewModel.notificationStates[subscription.id, default: false] },
-                            set: { viewModel.notificationStates[subscription.id] = $0 }
-                        )
+            ForEach(viewModel.subscriptions) { subscription in
+                SubscriptionNotificationView(
+                    subscription: subscription,
+                    isOn: Binding(
+                        get: { viewModel.notificationStates[subscription.id, default: false] },
+                        set: { viewModel.notificationStates[subscription.id] = $0 }
+                    ),
+                    notificationDate: Binding(
+                        get: { viewModel.notificationDates[subscription.id, default: .now] },
+                        set: { viewModel.notificationDates[subscription.id] = $0 }
                     )
-                    .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
-                    .listRowSeparator(.hidden)
-                    .listRowBackground(Color.clear)
-                }
+                )
             }
         }
         .listStyle(.plain)
