@@ -9,27 +9,21 @@ import SwiftUI
 
 struct NotificationsView: View {
     @Bindable var viewModel: NotificationsViewModel
-    
+
     var body: some View {
         List {
             ForEach(viewModel.subscriptions) { subscription in
                 SubscriptionNotificationView(
                     subscription: subscription,
-                    isOn: Binding(
-                        get: { viewModel.notificationStates[subscription.id, default: false] },
-                        set: { viewModel.notificationStates[subscription.id] = $0 }
-                    ),
-                    notificationDate: Binding(
-                        get: { viewModel.notificationDates[subscription.id, default: .now] },
-                        set: { viewModel.notificationDates[subscription.id] = $0 }
-                    )
+                    isOn: viewModel.notificationBinding(for: subscription),
+                    notificationDate: viewModel.notificationDateBinding(for: subscription)
                 )
             }
         }
         .listStyle(.plain)
         .navigationTitle("Notifications")
-        .onAppear {
-            viewModel.onAppear()
+        .task {
+            await viewModel.onAppear()
         }
     }
 }
@@ -38,7 +32,8 @@ struct NotificationsView: View {
     NavigationStack {
         NotificationsView(
             viewModel: NotificationsViewModel(
-                subscriptionsRepository: try! SubscriptionsRepositoryImpl()
+                subscriptionsRepository: try! SubscriptionsRepositoryImpl(),
+                notificationScheduler: LocalNotificationScheduler()
             )
         )
     }

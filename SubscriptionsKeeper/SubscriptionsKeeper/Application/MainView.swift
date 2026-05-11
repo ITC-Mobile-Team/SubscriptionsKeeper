@@ -85,7 +85,10 @@ struct MainView: View {
             }
             
             if notificationsViewModel == nil {
-                notificationsViewModel = NotificationsViewModel(subscriptionsRepository: subscriptionsRepository)
+                notificationsViewModel = NotificationsViewModel(
+                    subscriptionsRepository: subscriptionsRepository,
+                    notificationScheduler: LocalNotificationScheduler(delegate: nil)
+                )
             }
             
             if addSubscriptionViewModel == nil {

@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct SubscriptionsKeeperApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     @State private var userRepository: UserRepositoryImpl
     @State private var rateRepository: RateRepositoryImpl
     @State private var subscriptionsRepository: SubscriptionsRepositoryImpl
