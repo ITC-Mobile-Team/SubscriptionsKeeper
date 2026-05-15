@@ -12,15 +12,15 @@ struct MainView: View {
     @Environment(UserRepositoryImpl.self) private var userRepository
     @Environment(RateRepositoryImpl.self) private var rateRepository
 
-    @Bindable private var appRouter = AppRouter()
+    @State private var appRouter = AppRouter()
     @State private var subscriptionsViewModel: SubscriptionsViewModel?
     @State private var calendarViewModel: CalendarViewModel?
     @State private var notificationsViewModel: NotificationsViewModel?
     @State private var addSubscriptionViewModel: AddSubscriptionViewModel?
 
     var body: some View {
-//        @Bindable var appRouter = appRouter
-        
+        @Bindable var appRouter = appRouter
+
         TabView(selection: $appRouter.selectedTabItem) {
             Tab(
                 "Subscriptions",
@@ -88,7 +88,8 @@ struct MainView: View {
                 notificationsViewModel = NotificationsViewModel(
                     subscriptionsRepository: subscriptionsRepository,
                     userRepository: userRepository,
-                    notificationScheduler: LocalNotificationScheduler(delegate: nil)
+                    notificationScheduler: LocalNotificationScheduler(delegate: nil),
+                    router: appRouter
                 )
             }
             
@@ -112,12 +113,14 @@ struct MainView: View {
                                 }
                             }
                     }
+                    .presentationDragIndicator(.visible)
                 }
                 
             case let .newSubscription(subscription, mode):
                 NavigationStack {
                     newSubscriptionView(subscription: subscription, mode: mode)
                 }
+                .presentationDragIndicator(.visible)
                 
             case let .details(subscription):
                 NavigationStack {

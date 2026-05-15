@@ -12,4 +12,5 @@ protocol Router {
     func pop()
     func popToRoot()
     func dismiss()
+    func select(tabItem: TabItem)
 }

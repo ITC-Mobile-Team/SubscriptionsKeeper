@@ -22,6 +22,13 @@ struct NotificationsView: View {
         }
         .listStyle(.plain)
         .navigationTitle("Notifications")
+        .overlay {
+            if viewModel.subscriptions.isEmpty {
+                SubscriptionsEmptyView {
+                    viewModel.addSubscriptionButtonTapped()
+                }
+            }
+        }
         .task {
             await viewModel.onAppear()
         }
@@ -34,7 +41,8 @@ struct NotificationsView: View {
             viewModel: NotificationsViewModel(
                 subscriptionsRepository: try! SubscriptionsRepositoryImpl(),
                 userRepository: UserRepositoryImpl(),
-                notificationScheduler: LocalNotificationScheduler()
+                notificationScheduler: LocalNotificationScheduler(),
+                router: AppRouter()
             )
         )
     }

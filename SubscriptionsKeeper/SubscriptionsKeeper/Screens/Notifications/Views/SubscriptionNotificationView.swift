@@ -12,6 +12,13 @@ struct SubscriptionNotificationView: View {
     @Binding var isOn: Bool
     @Binding var notificationDate: Date
 
+    private var isPad: Bool { UIDevice.isPad }
+    private var imageSize: CGFloat { isPad ? 70 : 50 }
+    private var imageCornerRadius: CGFloat { isPad ? 16 : 12 }
+    private var titleFontSize: CGFloat { isPad ? 20 : 16 }
+    private var subtitleFontSize: CGFloat { isPad ? 19 : 15 }
+    private var cardPadding: CGFloat { isPad ? 16 : 12 }
+
     private var nextPaymentSubtitle: String {
         subscription.nextPaymentDate.formatted(.dateTime.day().month(.abbreviated))
     }
@@ -43,16 +50,16 @@ private extension SubscriptionNotificationView {
         HStack(spacing: 12) {
             RemoteImageView(stringUrl: subscription.imageUrlString)
                 .scaledToFit()
-                .frame(width: 50, height: 50)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .frame(width: imageSize, height: imageSize)
+                .clipShape(RoundedRectangle(cornerRadius: imageCornerRadius))
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(subscription.name)
-                    .font(.system(size: 16, weight: .semibold))
+                    .font(.system(size: titleFontSize, weight: .semibold))
                     .foregroundStyle(.primary)
                 
                 Text(nextPaymentSubtitle)
-                    .font(.subheadline)
+                    .font(.system(size: subtitleFontSize))
                     .foregroundStyle(.secondary)
             }
             
@@ -62,7 +69,7 @@ private extension SubscriptionNotificationView {
                 .labelsHidden()
                 .tint(.purple)
         }
-        .padding(12)
+        .padding(cardPadding)
     }
 }
 

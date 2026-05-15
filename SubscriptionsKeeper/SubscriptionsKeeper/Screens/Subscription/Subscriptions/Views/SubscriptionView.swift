@@ -11,6 +11,16 @@ struct SubscriptionView: View {
     let subscription: Subscription
     let date: String
 
+    private var isPad: Bool { UIDevice.isPad }
+    private var imageSize: CGFloat { isPad ? 70 : 50 }
+    private var imageCornerRadius: CGFloat { isPad ? 16 : 12 }
+    private var titleFontSize: CGFloat { isPad ? 20 : 16 }
+    private var subtitleFontSize: CGFloat { isPad ? 19 : 15 }
+    private var costFontSize: CGFloat { isPad ? 22 : 17 }
+    private var originalCostFontSize: CGFloat { isPad ? 17 : 12 }
+    private var dateFontSize: CGFloat { isPad ? 18 : 12 }
+    private var cardPadding: CGFloat { isPad ? 16 : 12 }
+
     private var subtitle: String {
         let cycleAndCurrency = "\(subscription.paymentCycle.displayName) • \(subscription.currency.abbreviation)"
         guard !subscription.description.isEmpty else {
@@ -18,21 +28,21 @@ struct SubscriptionView: View {
         }
         return "\(subscription.description) • \(cycleAndCurrency)"
     }
-    
+
     var body: some View {
         HStack(spacing: 12) {
             RemoteImageView(stringUrl: subscription.imageUrlString)
                 .scaledToFit()
-                .frame(width: 50, height: 50)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .frame(width: imageSize, height: imageSize)
+                .clipShape(RoundedRectangle(cornerRadius: imageCornerRadius))
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(subscription.name)
-                    .font(.system(size: 16, weight: .semibold))
+                    .font(.system(size: titleFontSize, weight: .semibold))
                     .foregroundStyle(.primary)
 
                 Text(subtitle)
-                    .font(.subheadline)
+                    .font(.system(size: subtitleFontSize))
                     .foregroundStyle(.secondary)
             }
 
@@ -41,24 +51,24 @@ struct SubscriptionView: View {
             VStack(alignment: .trailing, spacing: 2) {
                 if let dashboardCost = subscription.formattedConvertedCost() {
                     Text(dashboardCost)
-                        .font(.system(size: 17, weight: .bold))
+                        .font(.system(size: costFontSize, weight: .bold))
                         .foregroundStyle(.primary)
-                    
+
                     Text(subscription.cost.formatted(.price(currency: subscription.currency)))
-                        .font(.caption)
+                        .font(.system(size: originalCostFontSize))
                         .foregroundStyle(.secondary)
                 } else {
                     Text(subscription.cost.formatted(.price(currency: subscription.currency)))
-                        .font(.system(size: 17, weight: .bold))
+                        .font(.system(size: costFontSize, weight: .bold))
                         .foregroundStyle(.primary)
                 }
 
                 Text(date)
-                    .font(.caption)
+                    .font(.system(size: dateFontSize))
                     .foregroundStyle(.secondary)
             }
         }
-        .padding(12)
+        .padding(cardPadding)
         .background(.background, in: RoundedRectangle(cornerRadius: 16))
         .shadow(color: .black.opacity(0.06), radius: 8, y: 2)
     }

@@ -15,13 +15,22 @@ struct SubscriptionsView: View {
             Section {
                 monthlyAverageView
             }
-            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 24, trailing: 0))
+            .listRowInsets(
+                EdgeInsets(
+                    top: 0,
+                    leading: 0,
+                    bottom: 24,
+                    trailing: 0
+                )
+            )
             .listRowSeparator(.hidden)
             .listRowBackground(Color.clear)
 
             if viewModel.subscriptions.isEmpty {
                 Section {
-                    emptyView
+                    SubscriptionsEmptyView {
+                        viewModel.addSubscriptionButtonTapped()
+                    }
                 }
                 .listRowInsets(EdgeInsets())
                 .listRowSeparator(.hidden)
@@ -37,14 +46,14 @@ struct SubscriptionsView: View {
                                 date: viewModel.nextPaymentDateString(subscription: subscription)
                             )
                         }
-                        .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
-                        .listRowSeparator(.hidden)
-                        .listRowBackground(Color.clear)
                     }
                     .onDelete { offsets in
                         viewModel.delete(at: offsets)
                     }
                 }
+                .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
+                .listRowSeparator(.hidden)
+                .listRowBackground(Color.clear)
             }
         }
         .listStyle(.plain)
@@ -87,7 +96,24 @@ struct SubscriptionsView: View {
 
 private extension SubscriptionsView {
     var monthlyAverageView: some View {
-        ZStack {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("MONTHLY AVERAGE")
+                .font(.system(size: 16, weight: .bold))
+                .foregroundStyle(.white.opacity(0.9))
+
+            Text(viewModel.monthlyAverage)
+                .font(.system(size: 58, weight: .bold))
+                .foregroundStyle(.white)
+
+            HStack(spacing: 12) {
+                statBadge(title: "YEARLY", value: viewModel.yearly)
+                statBadge(title: "THIS MONTH", value: "€0,00")
+                statBadge(title: "SUBS.", value: viewModel.subscriptionsCount)
+            }
+        }
+        .frame(maxWidth: UIDevice.isPad ? nil : .infinity, alignment: .leading)
+        .padding(24)
+        .background {
             RoundedRectangle(cornerRadius: 24)
                 .fill(
                     LinearGradient(
@@ -100,25 +126,11 @@ private extension SubscriptionsView {
                         endPoint: .bottomTrailing
                     )
                 )
-
-            VStack(alignment: .leading, spacing: 16) {
-                Text("MONTHLY AVERAGE")
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundStyle(.white.opacity(0.9))
-
-                Text(viewModel.monthlyAverage)
-                    .font(.system(size: 58, weight: .bold))
-                    .foregroundStyle(.white)
-
-                HStack(spacing: 12) {
-                    statBadge(title: "YEARLY", value: viewModel.yearly)
-                    statBadge(title: "THIS MONTH", value: "€0,00")
-                    statBadge(title: "SUBS.", value: viewModel.subscriptionsCount)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(24)
         }
+        .frame(
+            maxWidth: .infinity,
+            alignment: UIDevice.isPad ? .center : .leading
+        )
         .padding(.horizontal, 16)
         .padding(.top, 8)
     }
@@ -140,73 +152,11 @@ private extension SubscriptionsView {
         .background(.white.opacity(0.2), in: RoundedRectangle(cornerRadius: 12))
     }
     
-    var emptyView: some View {
-        VStack(spacing: 24) {
-            ZStack {
-                Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [
-                                Color(red: 0.88, green: 0.30, blue: 0.78),
-                                Color(red: 0.98, green: 0.60, blue: 0.55)
-                            ],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 100, height: 100)
-                
-                Image(systemName: "creditcard")
-                    .font(.system(size: 50))
-                    .foregroundStyle(.white)
-            }
-            .padding(.top, 40)
-            
-            VStack(spacing: 12) {
-                Text("No subscriptions yet")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundStyle(.primary)
-                
-                Text("Track Spotify, Netflix, iCloud\nand all your services in one place")
-                    .font(.body)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-            }
-            
-            Button {
-                viewModel.addSubscriptionButtonTapped()
-            } label: {
-                HStack(spacing: 8) {
-                    Image(systemName: "plus")
-                        .font(.system(size: 18, weight: .semibold))
-                    
-                    Text("Add subscription")
-                        .font(.system(size: 18, weight: .semibold))
-                }
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 18)
-                .background(
-                    LinearGradient(
-                        colors: [
-                            Color(red: 0.55, green: 0.25, blue: 0.65),
-                            Color(red: 0.85, green: 0.35, blue: 0.48)
-                        ],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    ),
-                    in: Capsule()
-                )
-                .shadow(color: .black.opacity(0.15), radius: 10, y: 5)
-            }
-            .padding(.horizontal, 32)
-            .padding(.top, 8)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(16)
-    }
+//    var emptyView: some View {
+//        
+//    }
 }
+
 
 #Preview {
     NavigationStack {

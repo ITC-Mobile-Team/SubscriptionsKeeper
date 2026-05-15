@@ -12,6 +12,7 @@ final class NotificationsViewModel {
     private let subscriptionsRepository: SubscriptionsRepository
     private let userRepository: UserRepository
     private let notificationScheduler: NotificationScheduler
+    private let router: Router
 
     private(set) var subscriptions: [Subscription] = []
     private var notificationStates: [UUID: Bool] = [:]
@@ -20,11 +21,13 @@ final class NotificationsViewModel {
     init(
         subscriptionsRepository: SubscriptionsRepository,
         userRepository: UserRepository,
-        notificationScheduler: NotificationScheduler
+        notificationScheduler: NotificationScheduler,
+        router: Router
     ) {
         self.subscriptionsRepository = subscriptionsRepository
         self.userRepository = userRepository
         self.notificationScheduler = notificationScheduler
+        self.router = router
     }
 
     func onAppear() async {
@@ -63,6 +66,10 @@ final class NotificationsViewModel {
                 }
             }
         )
+    }
+    
+    func addSubscriptionButtonTapped() {
+        router.select(tabItem: .subscriptions)
     }
 }
 

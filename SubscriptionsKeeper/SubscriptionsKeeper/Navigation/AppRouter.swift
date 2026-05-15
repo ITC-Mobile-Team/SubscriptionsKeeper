@@ -83,4 +83,8 @@ final class AppRouter: Router {
         presentedRoute = nil
         fullScreenPresentedRoute = nil
     }
+    
+    func select(tabItem: TabItem) {
+        selectedTabItem = tabItem
+    }
 }
