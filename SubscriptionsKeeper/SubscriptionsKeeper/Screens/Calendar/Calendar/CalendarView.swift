@@ -82,9 +82,13 @@ private extension CalendarView {
                 }
             }
             .foregroundStyle(.white)
-            .padding(16)
+            .padding(.vertical, 16)
+            .padding(.horizontal, UIDevice.isPad ? 32 : 16)
         }
-        .fixedSize(horizontal: false, vertical: true)
+        .fixedSize(
+            horizontal: UIDevice.isPad ? true : false,
+            vertical: true
+        )
     }
     
     func selectedDayView(_ day: Int) -> some View {
