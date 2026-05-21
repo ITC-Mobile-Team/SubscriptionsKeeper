@@ -35,6 +35,7 @@ final class SubscriptionsViewModel {
     private(set) var subscriptions: [Subscription] = []
     var showDeleteAlert = false
     var removedSubscription: Subscription?
+    var isLoading: Bool = false
 
     private let subscriptionsRepository: SubscriptionsRepository
     private let fetchDashboardSubscriptions: FetchDashboardSubscriptionsUseCase
@@ -54,7 +55,9 @@ final class SubscriptionsViewModel {
     }
     
     func onAppear() async {
+        isLoading = true
         await fetchSubscriptions()
+        isLoading = false
     }
     
     func fetchSubscriptions() async {

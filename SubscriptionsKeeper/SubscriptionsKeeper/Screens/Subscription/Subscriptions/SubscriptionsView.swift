@@ -26,34 +26,10 @@ struct SubscriptionsView: View {
             .listRowSeparator(.hidden)
             .listRowBackground(Color.clear)
 
-            if viewModel.subscriptions.isEmpty {
-                Section {
-                    SubscriptionsEmptyView {
-                        viewModel.addSubscriptionButtonTapped()
-                    }
-                }
-                .listRowInsets(EdgeInsets())
-                .listRowSeparator(.hidden)
-                .listRowBackground(Color.clear)
+            if viewModel.isLoading {
+                loadingView
             } else {
-                Section {
-                    ForEach(viewModel.subscriptions) { subscription in
-                        Button {
-                            viewModel.subscriptionTapped(subscription)
-                        } label: {
-                            SubscriptionView(
-                                subscription: subscription,
-                                date: viewModel.nextPaymentDateString(subscription: subscription)
-                            )
-                        }
-                    }
-                    .onDelete { offsets in
-                        viewModel.delete(at: offsets)
-                    }
-                }
-                .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
-                .listRowSeparator(.hidden)
-                .listRowBackground(Color.clear)
+                contentView
             }
         }
         .listStyle(.plain)
@@ -87,6 +63,7 @@ struct SubscriptionsView: View {
                 .tint(.purple)
             }
         }
+        .animation(.smooth, value: viewModel.isLoading)
         .task {
             await viewModel.onAppear()
         }
@@ -95,6 +72,48 @@ struct SubscriptionsView: View {
 }
 
 private extension SubscriptionsView {
+    var loadingView: some View {
+        Color.clear
+            .overlay {
+                ProgressView()
+                    .tint(.gray)
+            }
+            .listRowSeparator(.hidden)
+    }
+    
+    @ViewBuilder
+    var contentView: some View {
+        if viewModel.subscriptions.isEmpty {
+            Section {
+                SubscriptionsEmptyView {
+                    viewModel.addSubscriptionButtonTapped()
+                }
+            }
+            .listRowInsets(EdgeInsets())
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
+        } else {
+            Section {
+                ForEach(viewModel.subscriptions) { subscription in
+                    Button {
+                        viewModel.subscriptionTapped(subscription)
+                    } label: {
+                        SubscriptionView(
+                            subscription: subscription,
+                            date: viewModel.nextPaymentDateString(subscription: subscription)
+                        )
+                    }
+                }
+                .onDelete { offsets in
+                    viewModel.delete(at: offsets)
+                }
+            }
+            .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
+        }
+    }
+    
     var monthlyAverageView: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("MONTHLY AVERAGE")

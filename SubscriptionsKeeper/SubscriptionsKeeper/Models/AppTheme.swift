@@ -5,7 +5,6 @@
 //  Created by Bohdan Pokhidnia on 21.05.2026.
 //
 
-import SwiftUI
 import UIKit
 
 enum AppTheme: Int, Codable, CaseIterable {
