@@ -45,6 +45,22 @@ struct SettingsView: View {
                             .labelsHidden()
                             .tint(.purple)
                     }
+                    
+                    ContentSectionDivider()
+                    
+                    ContentFieldView(
+                        icon: "circle.lefthalf.filled",
+                        iconColor: .black,
+                        label: "Theme"
+                    ) {
+                        Picker("", selection: $viewModel.userRepository.currentTheme) {
+                            ForEach(AppTheme.allCases, id: \.self) { theme in
+                                Text(theme.title)
+                                    .tag(theme)
+                            }
+                        }
+                        .tint(.secondary)
+                    }
                 }
                 .padding(16)
                 
