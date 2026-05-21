@@ -40,6 +40,7 @@ struct AddSubscriptionView: View {
                 viewModel.onAppear()
             }
         }
+        .appBackground()
     }
 }
 
@@ -68,7 +69,7 @@ private extension AddSubscriptionView {
                     .foregroundStyle(.secondary.opacity(0.5))
             }
             .padding(16)
-            .background(.white, in: RoundedRectangle(cornerRadius: 20))
+            .appSecondaryBackground()
             .shadow(color: .black.opacity(0.08), radius: 8, y: 2)
         }
         .buttonStyle(.plain)

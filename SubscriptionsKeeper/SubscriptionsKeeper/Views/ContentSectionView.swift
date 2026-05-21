@@ -8,15 +8,18 @@
 import SwiftUI
 
 struct ContentSectionView<Content: View>: View {
+    @Environment(\.colorScheme) private var colorScheme
     @ViewBuilder let content: () -> Content
 
     var body: some View {
         VStack(spacing: 0) {
             content()
         }
-        .background(Color(.systemBackground))
+        .background(
+            colorScheme == .light ? Color(.systemBackground) : .white.opacity(0.06)
+        )
         .clipShape(RoundedRectangle(cornerRadius: 16))
-        .shadow(color: .black.opacity(0.04), radius: 6, y: 2)
+        .shadow(color: .black.opacity(colorScheme == .dark ? 0 : 0.04), radius: 6, y: 2)
     }
 }
 

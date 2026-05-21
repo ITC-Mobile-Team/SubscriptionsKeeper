@@ -19,7 +19,7 @@ struct SettingsView: View {
                 ContentSectionView {
                     ContentFieldView(
                         icon: "banknote",
-                        iconColor: .black,
+                        iconColor: .primary,
                         label: "Main Currency"
                     ) {
                         Picker(
@@ -38,7 +38,7 @@ struct SettingsView: View {
                     
                     ContentFieldView(
                         icon: "bell.and.waves.left.and.right.fill",
-                        iconColor: .black,
+                        iconColor: .primary,
                         label: "Time-sensitive notifications"
                     ) {
                         Toggle("", isOn: $viewModel.userRepository.isEnableTimeSensitiveNotifications)
@@ -50,7 +50,7 @@ struct SettingsView: View {
                     
                     ContentFieldView(
                         icon: "circle.lefthalf.filled",
-                        iconColor: .black,
+                        iconColor: .primary,
                         label: "Theme"
                     ) {
                         Picker("", selection: $viewModel.userRepository.currentTheme) {

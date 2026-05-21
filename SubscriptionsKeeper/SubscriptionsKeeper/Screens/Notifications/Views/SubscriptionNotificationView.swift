@@ -12,6 +12,8 @@ struct SubscriptionNotificationView: View {
     @Binding var isOn: Bool
     @Binding var notificationDate: Date
 
+    @Environment(\.colorScheme) private var colorScheme
+
     private var isPad: Bool { UIDevice.isPad }
     private var imageSize: CGFloat { isPad ? 70 : 50 }
     private var imageCornerRadius: CGFloat { isPad ? 16 : 12 }
@@ -36,8 +38,8 @@ struct SubscriptionNotificationView: View {
                     .padding([.horizontal, .bottom], 12)
                 }
             }
-            .background(.background, in: RoundedRectangle(cornerRadius: 16))
-            .shadow(color: .black.opacity(0.06), radius: 8, y: 2)
+            .appSecondaryBackground()
+            .shadow(color: .black.opacity(colorScheme == .dark ? 0 : 0.06), radius: 8, y: 2)
             .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
             .listRowSeparator(.hidden)
             .listRowBackground(Color.clear)

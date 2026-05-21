@@ -34,6 +34,7 @@ struct SubscriptionsView: View {
         }
         .listStyle(.plain)
         .navigationTitle("Subscriptions Keeper")
+        .appBackground()
         .alert("Delete \(viewModel.removedSubscription?.name ?? "")?", isPresented: $viewModel.showDeleteAlert) {
             Button("Cancel", role: .cancel) {}
 
@@ -79,6 +80,7 @@ private extension SubscriptionsView {
                     .tint(.gray)
             }
             .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
     }
     
     @ViewBuilder

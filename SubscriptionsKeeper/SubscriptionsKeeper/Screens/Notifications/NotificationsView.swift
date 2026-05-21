@@ -22,6 +22,7 @@ struct NotificationsView: View {
         }
         .listStyle(.plain)
         .navigationTitle("Notifications")
+        .appBackground()
         .overlay {
             if viewModel.subscriptions.isEmpty {
                 SubscriptionsEmptyView {

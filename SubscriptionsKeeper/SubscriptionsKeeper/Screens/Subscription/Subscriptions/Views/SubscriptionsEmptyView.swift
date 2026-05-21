@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct SubscriptionsEmptyView: View {
+    @Environment(\.colorScheme) private var colorScheme
     var buttonTapped: () -> Void
     
     var body: some View {
@@ -70,7 +71,7 @@ struct SubscriptionsEmptyView: View {
                     ),
                     in: Capsule()
                 )
-                .shadow(color: .black.opacity(0.15), radius: 10, y: 5)
+                .shadow(color: .black.opacity(colorScheme == .dark ? 0 : 0.15), radius: 10, y: 5)
             }
             .padding(.horizontal, 32)
             .padding(.top, 8)

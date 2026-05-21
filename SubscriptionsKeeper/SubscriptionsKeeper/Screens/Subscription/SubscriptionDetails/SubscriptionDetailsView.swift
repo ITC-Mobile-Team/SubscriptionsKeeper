@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct SubscriptionDetailsView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @Bindable var viewModel: SubscriptionDetailsViewModel
     @State private var headerBackground: Color = Color(.systemGray5)
 
     var body: some View {
         ZStack {
             Rectangle()
-                .fill(headerBackground.opacity(0.14).gradient)
+                .fill(headerBackground.opacity(colorScheme == .dark ? 0.30 : 0.14).gradient)
 
             ScrollView {
                 VStack(spacing: 16) {
@@ -78,7 +79,7 @@ struct SubscriptionDetailsView: View {
             .scaledToFit()
             .frame(width: 100, height: 100)
             .clipShape(RoundedRectangle(cornerRadius: 22))
-            .shadow(color: .black.opacity(0.08), radius: 8, y: 2)
+            .shadow(color: .black.opacity(colorScheme == .dark ? 0 : 0.08), radius: 8, y: 2)
 
             VStack(spacing: 4) {
                 Text(viewModel.subscription.name)
@@ -87,7 +88,7 @@ struct SubscriptionDetailsView: View {
                 if !viewModel.subscription.description.isEmpty {
                     Text(viewModel.subscription.description)
                         .font(.callout.weight(.medium))
-                        .foregroundStyle(Color(.darkGray))
+                        .foregroundStyle(.secondary)
                 }
             }
         }

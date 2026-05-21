@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CalendarView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @Bindable var viewModel: CalendarViewModel
     
     var body: some View {
@@ -23,6 +24,7 @@ struct CalendarView: View {
         .padding([.horizontal, .bottom], 16)
         .navigationTitle("Calendar")
         .navigationBarTitleDisplayMode(.inline)
+        .appBackground()
         .task {
             await viewModel.onAppear()
         }
@@ -155,7 +157,7 @@ private extension CalendarView {
     var calendarView: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 24)
-                .fill(Color.white)
+                .fill(colorScheme == .light ? Color.white : Color.white.opacity(0.06))
                 .shadow(color: .black.opacity(0.08), radius: 8, y: 2)
             
             VStack(spacing: 8) {
@@ -174,9 +176,11 @@ private extension CalendarView {
             } label: {
                 Image(systemName: "chevron.left")
                     .fontWeight(.bold)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(colorScheme == .light ? .black : .white)
                     .frame(width: 44, height: 44)
-                    .background(Color(.systemGray5))
+                    .background(
+                        colorScheme == .light ? Color(.systemGray5) : .white.opacity(0.06)
+                    )
                     .clipShape(Circle())
             }
 
@@ -216,7 +220,7 @@ private extension CalendarView {
             } label: {
                 Image(systemName: "chevron.right")
                     .fontWeight(.bold)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(colorScheme == .light ? .black : .white)
                     .frame(width: 44, height: 44)
                     .background(Color(.systemGray5))
                     .clipShape(Circle())
@@ -291,7 +295,9 @@ private extension CalendarView {
             Spacer(minLength: 0)
         }
         .frame(maxWidth: .infinity, minHeight: 50)
-        .background(Color(.systemGray6))
+        .background(
+            colorScheme == .light ? Color(.systemGray6) : .white.opacity(0.06)
+        )
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .overlay {
             if viewModel.isToday(day: day) {

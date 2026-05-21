@@ -11,6 +11,8 @@ struct SubscriptionView: View {
     let subscription: Subscription
     let date: String
 
+    @Environment(\.colorScheme) private var colorScheme
+
     private var isPad: Bool { UIDevice.isPad }
     private var imageSize: CGFloat { isPad ? 70 : 50 }
     private var imageCornerRadius: CGFloat { isPad ? 16 : 12 }
@@ -69,15 +71,17 @@ struct SubscriptionView: View {
             }
         }
         .padding(cardPadding)
-        .background(.background, in: RoundedRectangle(cornerRadius: 16))
-        .shadow(color: .black.opacity(0.06), radius: 8, y: 2)
+        .appSecondaryBackground()
+        .shadow(color: .black.opacity(colorScheme == .dark ? 0 : 0.06), radius: 8, y: 2)
     }
 }
 
-#Preview {
-    SubscriptionView(
-        subscription: .preview(),
-        date: "20 Jan"
-    )
-    .padding()
+#Preview(traits: .sizeThatFitsLayout) {
+    ZStack {
+        SubscriptionView(
+            subscription: .preview(),
+            date: "20 Jan"
+        )
+        .padding()
+    }
 }
