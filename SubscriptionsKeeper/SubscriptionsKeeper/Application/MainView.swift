@@ -59,6 +59,12 @@ struct MainView: View {
             }
         }
         .tint(.purple)
+        .onChange(of: userRepository.currentTheme, initial: true) { _, theme in
+            UIApplication.shared.connectedScenes
+                .compactMap { $0 as? UIWindowScene }
+                .flatMap { $0.windows }
+                .forEach { $0.overrideUserInterfaceStyle = theme.uiStyle }
+        }
         .task {
             try? await rateRepository.setup(currency: userRepository.currentCurrency)
             
