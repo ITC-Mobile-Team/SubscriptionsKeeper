@@ -9,11 +9,6 @@ import SwiftUI
 
 @Observable
 final class NewSubscriptionViewModel {
-    enum Mode {
-        case create
-        case edit
-    }
-    
     private let repository: SubscriptionsRepository
     private let router: Router
     var subscription: Subscription

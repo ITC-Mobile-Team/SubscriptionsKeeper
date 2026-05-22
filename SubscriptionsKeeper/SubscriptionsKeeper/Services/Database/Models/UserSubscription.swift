@@ -10,16 +10,15 @@ import Foundation
 
 @Model
 final class UserSubscription {
-    @Attribute(.unique)
-    var id: UUID
-    var identifierRawValue: String
-    var groupRawValue: String
-    var name: String
-    var subscriptionDescription: String
-    var cost: Double
-    var currencyRawValue: String
-    var paymentCycleRawValue: String
-    var firstPaymentAt: Date
+    var id: UUID = UUID()
+    var identifierRawValue: String = ""
+    var groupRawValue: String = ""
+    var name: String = ""
+    var subscriptionDescription: String = ""
+    var cost: Double = 0
+    var currencyRawValue: String = ""
+    var paymentCycleRawValue: String = ""
+    var firstPaymentAt: Date = Date()
 
     init(
         id: UUID,

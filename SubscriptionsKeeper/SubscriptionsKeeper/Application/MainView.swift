@@ -173,7 +173,7 @@ struct MainView: View {
         }
     }
     
-    private func newSubscriptionView(subscription: Subscription, mode: NewSubscriptionViewModel.Mode) -> some View {
+    private func newSubscriptionView(subscription: Subscription, mode: Mode) -> some View {
         NewSubscriptionView(
             viewModel: NewSubscriptionViewModel(
                 repository: subscriptionsRepository,

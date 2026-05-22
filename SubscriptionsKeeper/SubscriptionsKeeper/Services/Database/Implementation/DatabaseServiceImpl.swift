@@ -16,8 +16,12 @@ final class DatabaseServiceImpl<Record: DatabaseRecord>: DatabaseService {
 
     init() throws(DatabaseError) {
         let schema = Schema([Record.self])
-        let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-        
+        let configuration = ModelConfiguration(
+            schema: schema,
+            isStoredInMemoryOnly: false,
+            cloudKitDatabase: .private("iCloud.pokhindia.subscriptionskeeper.SubscriptionsKeeper")
+        )
+
         do {
             modelContainer = try ModelContainer(for: schema, configurations: configuration)
         } catch {
@@ -41,9 +45,12 @@ final class DatabaseServiceImpl<Record: DatabaseRecord>: DatabaseService {
     }
 
     func create(from model: DomainModel, id: UUID) throws(DatabaseError) {
-        let entry = Record(from: model, id: id)
-        modelContext.insert(entry)
-        
+        if let existing = try findEntry(by: id) {
+            existing.update(from: model)
+        } else {
+            modelContext.insert(Record(from: model, id: id))
+        }
+
         do {
             try modelContext.save()
         } catch {
@@ -75,20 +82,21 @@ final class DatabaseServiceImpl<Record: DatabaseRecord>: DatabaseService {
 // MARK: - Private helpers
 
 private extension DatabaseServiceImpl {
-    func fetchEntry(by id: UUID) throws(DatabaseError) -> Record {
+    func findEntry(by id: UUID) throws(DatabaseError) -> Record? {
         var descriptor = FetchDescriptor<Record>(
             predicate: #Predicate { $0.id == id }
         )
         descriptor.fetchLimit = 1
-        
-        let results: [Record]
+
         do {
-            results = try modelContext.fetch(descriptor)
+            return try modelContext.fetch(descriptor).first
         } catch {
             throw DatabaseError.fetchFailed(error)
         }
-        
-        guard let entry = results.first else {
+    }
+
+    func fetchEntry(by id: UUID) throws(DatabaseError) -> Record {
+        guard let entry = try findEntry(by: id) else {
             throw DatabaseError.notFound(id)
         }
         return entry

@@ -9,7 +9,12 @@ enum PresentationRoute: Hashable, Identifiable {
     var id: Self { self }
     
     case addSubscription
-    case newSubscription(_ subscription: Subscription, mode: NewSubscriptionViewModel.Mode)
+    case newSubscription(_ subscription: Subscription, mode: Mode)
     case details(subscription: Subscription)
     case settings
+}
+
+enum Mode {
+    case create
+    case edit
 }
