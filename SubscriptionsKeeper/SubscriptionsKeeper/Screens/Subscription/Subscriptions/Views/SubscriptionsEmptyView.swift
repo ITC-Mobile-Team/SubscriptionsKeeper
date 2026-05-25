@@ -78,6 +78,7 @@ struct SubscriptionsEmptyView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(16)
+        .accessibilityIdentifier("subscriptions.emptyView")
     }
 }
 

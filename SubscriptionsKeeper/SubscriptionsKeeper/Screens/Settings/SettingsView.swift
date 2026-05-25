@@ -105,6 +105,7 @@ struct SettingsView: View {
                 }
             }
         }
+        .accessibilityIdentifier("settings.view")
     }
 }
 

@@ -66,13 +66,29 @@ struct MainView: View {
                 .forEach { $0.overrideUserInterfaceStyle = theme.uiStyle }
         }
         .task {
+            #if DEBUG
+            if !UITestSupport.isActive {
+                try? await rateRepository.setup(currency: userRepository.currentCurrency)
+            }
+            #else
             try? await rateRepository.setup(currency: userRepository.currentCurrency)
-            
-            let fetchDashboardSubscriptions = FetchDashboardSubscriptionsUseCaseImpl(
+            #endif
+
+            let fetchDashboardSubscriptions: FetchDashboardSubscriptionsUseCase
+            #if DEBUG
+            fetchDashboardSubscriptions = UITestSupport.fetchDashboardSubscriptionsOverride()
+                ?? FetchDashboardSubscriptionsUseCaseImpl(
+                    subscriptionsRepository: subscriptionsRepository,
+                    userRepository: userRepository,
+                    rateRepository: rateRepository
+                )
+            #else
+            fetchDashboardSubscriptions = FetchDashboardSubscriptionsUseCaseImpl(
                 subscriptionsRepository: subscriptionsRepository,
                 userRepository: userRepository,
                 rateRepository: rateRepository
             )
+            #endif
 
             if subscriptionsViewModel == nil {
                 subscriptionsViewModel = SubscriptionsViewModel(
@@ -120,6 +136,7 @@ struct MainView: View {
                             }
                     }
                     .presentationDragIndicator(.visible)
+                    .accessibilityIdentifier("addSubscription.view")
                 }
                 
             case let .newSubscription(subscription, mode):

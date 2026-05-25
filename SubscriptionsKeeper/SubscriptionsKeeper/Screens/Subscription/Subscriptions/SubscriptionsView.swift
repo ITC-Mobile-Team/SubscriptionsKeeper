@@ -53,6 +53,7 @@ struct SubscriptionsView: View {
                     Image(systemName: "gear")
                 }
                 .tint(.purple)
+                .accessibilityIdentifier("subscriptions.settingsButton")
             }
             
             ToolbarItem(placement: .topBarTrailing) {
@@ -62,6 +63,7 @@ struct SubscriptionsView: View {
                     Image(systemName: "plus")
                 }
                 .tint(.purple)
+                .accessibilityIdentifier("subscriptions.addButton")
             }
         }
         .animation(.smooth, value: viewModel.isLoading)
@@ -78,6 +80,7 @@ private extension SubscriptionsView {
             .overlay {
                 ProgressView()
                     .tint(.gray)
+                    .accessibilityIdentifier("subscriptions.loadingIndicator")
             }
             .listRowSeparator(.hidden)
             .listRowBackground(Color.clear)

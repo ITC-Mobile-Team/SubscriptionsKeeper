@@ -10,14 +10,30 @@
 		F78EF29C2F976A3A00D48874 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F78EF29B2F976A3A00D48874 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		F797C86A2FC09B8C00672C26 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F78EEF572F922CA800D48874 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F78EEF5E2F922CA800D48874;
+			remoteInfo = SubscriptionsKeeper;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		F78EEF5F2F922CA800D48874 /* SubscriptionsKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SubscriptionsKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F797C8642FC09B8B00672C26 /* SubscriptionsKeeperUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SubscriptionsKeeperUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		F78EEF612F922CA900D48874 /* SubscriptionsKeeper */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = SubscriptionsKeeper;
+			sourceTree = "<group>";
+		};
+		F797C8652FC09B8B00672C26 /* SubscriptionsKeeperUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SubscriptionsKeeperUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -31,6 +47,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F797C8612FC09B8B00672C26 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -38,6 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				F78EEF612F922CA900D48874 /* SubscriptionsKeeper */,
+				F797C8652FC09B8B00672C26 /* SubscriptionsKeeperUITests */,
 				F78EEF602F922CA800D48874 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -46,6 +70,7 @@
 			isa = PBXGroup;
 			children = (
 				F78EEF5F2F922CA800D48874 /* SubscriptionsKeeper.app */,
+				F797C8642FC09B8B00672C26 /* SubscriptionsKeeperUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -76,6 +101,29 @@
 			productReference = F78EEF5F2F922CA800D48874 /* SubscriptionsKeeper.app */;
 			productType = "com.apple.product-type.application";
 		};
+		F797C8632FC09B8B00672C26 /* SubscriptionsKeeperUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F797C86E2FC09B8C00672C26 /* Build configuration list for PBXNativeTarget "SubscriptionsKeeperUITests" */;
+			buildPhases = (
+				F797C8602FC09B8B00672C26 /* Sources */,
+				F797C8612FC09B8B00672C26 /* Frameworks */,
+				F797C8622FC09B8B00672C26 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F797C86B2FC09B8C00672C26 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F797C8652FC09B8B00672C26 /* SubscriptionsKeeperUITests */,
+			);
+			name = SubscriptionsKeeperUITests;
+			packageProductDependencies = (
+			);
+			productName = SubscriptionsKeeperUITests;
+			productReference = F797C8642FC09B8B00672C26 /* SubscriptionsKeeperUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -83,11 +131,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2640;
-				LastUpgradeCheck = 2640;
+				LastSwiftUpdateCheck = 2650;
+				LastUpgradeCheck = 2650;
 				TargetAttributes = {
 					F78EEF5E2F922CA800D48874 = {
 						CreatedOnToolsVersion = 26.4;
+					};
+					F797C8632FC09B8B00672C26 = {
+						CreatedOnToolsVersion = 26.5;
+						TestTargetID = F78EEF5E2F922CA800D48874;
 					};
 				};
 			};
@@ -109,12 +161,20 @@
 			projectRoot = "";
 			targets = (
 				F78EEF5E2F922CA800D48874 /* SubscriptionsKeeper */,
+				F797C8632FC09B8B00672C26 /* SubscriptionsKeeperUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		F78EEF5D2F922CA800D48874 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F797C8622FC09B8B00672C26 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -131,7 +191,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F797C8602FC09B8B00672C26 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F797C86B2FC09B8C00672C26 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F78EEF5E2F922CA800D48874 /* SubscriptionsKeeper */;
+			targetProxy = F797C86A2FC09B8C00672C26 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		F78EEF682F922CAA00D48874 /* Debug */ = {
@@ -168,6 +243,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 4PH2U96J79;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -191,6 +267,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -230,6 +307,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 4PH2U96J79;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -246,6 +324,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 			};
 			name = Release;
@@ -258,6 +337,7 @@
 				CODE_SIGN_ENTITLEMENTS = SubscriptionsKeeper/SubscriptionsKeeper.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 3S8AVD2TKW;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -305,6 +385,7 @@
 				CODE_SIGN_ENTITLEMENTS = SubscriptionsKeeper/SubscriptionsKeeper.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 3S8AVD2TKW;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -344,6 +425,58 @@
 			};
 			name = Release;
 		};
+		F797C86C2FC09B8C00672C26 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = 3S8AVD2TKW;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pokhindia.subscriptionskeeper.SubscriptionsKeeperUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_TARGET_NAME = SubscriptionsKeeper;
+				XROS_DEPLOYMENT_TARGET = 26.5;
+			};
+			name = Debug;
+		};
+		F797C86D2FC09B8C00672C26 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = 3S8AVD2TKW;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pokhindia.subscriptionskeeper.SubscriptionsKeeperUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_TARGET_NAME = SubscriptionsKeeper;
+				XROS_DEPLOYMENT_TARGET = 26.5;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -361,6 +494,15 @@
 			buildConfigurations = (
 				F78EEF6B2F922CAA00D48874 /* Debug */,
 				F78EEF6C2F922CAA00D48874 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F797C86E2FC09B8C00672C26 /* Build configuration list for PBXNativeTarget "SubscriptionsKeeperUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F797C86C2FC09B8C00672C26 /* Debug */,
+				F797C86D2FC09B8C00672C26 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
